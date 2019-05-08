@@ -94,6 +94,49 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Util.vb" />
+    <Compile Include="事業所マスタ.Designer.vb">
+      <DependentUpon>事業所マスタ.vb</DependentUpon>
+    </Compile>
+    <Compile Include="事業所マスタ.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="事業所別実施履歴.Designer.vb">
+      <DependentUpon>事業所別実施履歴.vb</DependentUpon>
+    </Compile>
+    <Compile Include="事業所別実施履歴.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="健診結果報告書.Designer.vb">
+      <DependentUpon>健診結果報告書.vb</DependentUpon>
+    </Compile>
+    <Compile Include="健診結果報告書.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="健診結果ＦＤ.Designer.vb">
+      <DependentUpon>健診結果ＦＤ.vb</DependentUpon>
+    </Compile>
+    <Compile Include="健診結果ＦＤ.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="受診者マスタ.Designer.vb">
+      <DependentUpon>受診者マスタ.vb</DependentUpon>
+    </Compile>
+    <Compile Include="受診者マスタ.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="受診者一覧.Designer.vb">
+      <DependentUpon>受診者一覧.vb</DependentUpon>
+    </Compile>
+    <Compile Include="受診者一覧.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ＦＤﾘｽﾄ.Designer.vb">
+      <DependentUpon>ＦＤﾘｽﾄ.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ＦＤﾘｽﾄ.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -101,6 +144,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TopForm.resx">
+      <DependentUpon>TopForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +159,53 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ADODB">
+      <Guid>{2A75196C-D9EB-4129-B803-931327F72D5C}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Office">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
