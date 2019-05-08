@@ -1,0 +1,11 @@
+C:\Users\yoshi\AppData\Local\Temporary Projects\Health3\bin\Release\Health3.exe
+C:\Users\yoshi\AppData\Local\Temporary Projects\Health3\bin\Release\Health3.pdb
+C:\Users\yoshi\AppData\Local\Temporary Projects\Health3\bin\Release\Health3.xml
+C:\Users\yoshi\AppData\Local\Temporary Projects\Health3\obj\x86\Release\Health3.Resources.resources
+C:\Users\yoshi\AppData\Local\Temporary Projects\Health3\obj\x86\Release\Health3.vbproj.GenerateResource.Cache
+C:\Users\yoshi\AppData\Local\Temporary Projects\Health3\obj\x86\Release\Health3.exe
+C:\Users\yoshi\AppData\Local\Temporary Projects\Health3\obj\x86\Release\Health3.xml
+C:\Users\yoshi\AppData\Local\Temporary Projects\Health3\obj\x86\Release\Health3.pdb
+C:\Users\yoshi\documents\visual studio 2010\Projects\Health3\Health3\obj\x86\Release\Health3.exe
+C:\Users\yoshi\documents\visual studio 2010\Projects\Health3\Health3\obj\x86\Release\Health3.xml
+C:\Users\yoshi\documents\visual studio 2010\Projects\Health3\Health3\obj\x86\Release\Health3.pdb
