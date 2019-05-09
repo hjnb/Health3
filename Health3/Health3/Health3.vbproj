@@ -75,6 +75,24 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="beforePrintForm.Designer.vb">
+      <DependentUpon>beforePrintForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="beforePrintForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="resultInputDataGridView.Designer.vb">
+      <DependentUpon>resultInputDataGridView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="resultInputDataGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="resultInputForm.Designer.vb">
+      <DependentUpon>resultInputForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="resultInputForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TopForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -142,11 +160,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="beforePrintForm.resx">
+      <DependentUpon>beforePrintForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resultInputForm.resx">
+      <DependentUpon>resultInputForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TopForm.resx">
       <DependentUpon>TopForm.vb</DependentUpon>

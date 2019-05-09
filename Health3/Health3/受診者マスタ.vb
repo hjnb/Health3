@@ -2,6 +2,9 @@
 
 Public Class 受診者マスタ
 
+    '健診結果入力フォーム
+    Private inputForm As resultInputForm
+
     ''' <summary>
     ''' 行ヘッダーのカレントセルを表す三角マークを非表示に設定する為のクラス。
     ''' </summary>
@@ -338,7 +341,7 @@ Public Class 受診者マスタ
             sexBox.Text = sex
             birthBox.setWarekiStr(birth)
             kubunBox.Text = kubun
-            telBox.Text = tel
+            TelBox.Text = tel
             postBox.Text = post
             jyuBox.Text = jyu
             commentBox.Text = comment
@@ -619,6 +622,71 @@ Public Class 受診者マスタ
             Else
                 rs.Close()
                 cn.Close()
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' 診断書ボタンクリックイベント
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnPaper_Click(sender As System.Object, e As System.EventArgs) Handles btnPaper.Click
+        '事業所名
+        Dim ind As String = indBox.Text
+        If ind = "" Then
+            MsgBox("事業所名を選択して下さい。", MsgBoxStyle.Exclamation)
+            indBox.Focus()
+            Return
+        End If
+        '健保番号
+        Dim bango As String = bangoBox.Text
+        If bango = "" Then
+            MsgBox("健保番号を入力して下さい。", MsgBoxStyle.Exclamation)
+            bangoBox.Focus()
+            Return
+        ElseIf Not System.Text.RegularExpressions.Regex.IsMatch(bango, "^\d+$") Then
+            MsgBox("健保番号は数値を入力して下さい。", MsgBoxStyle.Exclamation)
+            bangoBox.Focus()
+            Return
+        End If
+        '氏名
+        Dim nam As String = namBox.Text
+        If nam = "" Then
+            MsgBox("氏名を入力して下さい。", MsgBoxStyle.Exclamation)
+            namBox.Focus()
+            Return
+        End If
+        'カナ
+        Dim kana As String = kanaBox.Text
+        If kana = "" Then
+            MsgBox("カナを入力して下さい。", MsgBoxStyle.Exclamation)
+            kanaBox.Focus()
+            Return
+        End If
+        '性別
+        Dim sex As String = sexBox.Text
+        If Not (sex = "1" OrElse sex = "2") Then
+            MsgBox("性別を正しく入力して下さい。", MsgBoxStyle.Exclamation)
+            sexBox.Focus()
+            Return
+        End If
+        '生年月日
+        Dim birth As String = birthBox.getWarekiStr()
+        If birth = "" Then
+            MsgBox("生年月日を入力して下さい。", MsgBoxStyle.Exclamation)
+            birthBox.Focus()
+            Return
+        End If
+
+        '印刷前フォーム表示
+        Dim pf As New beforePrintForm(ind, nam, kana, sex, birth, rbtnPrint.Checked)
+        If pf.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            '健診結果入力フォーム表示
+            If IsNothing(inputForm) OrElse inputForm.IsDisposed Then
+                inputForm = New resultInputForm(ind, bango, nam, kana, sex, birth, rbtnPrint.Checked)
+                inputForm.Show()
             End If
         End If
     End Sub
