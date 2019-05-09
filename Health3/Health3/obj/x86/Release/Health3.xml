@@ -6,7 +6,110 @@ Health3
 </name>
 </assembly>
 <members>
-<member name="M:Health3.Util.EnableDoubleBuffering(System.Windows.Forms.Control)">
+<member name="T:Health3.受診者マスタ.dgvRowHeaderCell">
+	<summary>
+ 行ヘッダーのカレントセルを表す三角マークを非表示に設定する為のクラス。
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.受診者マスタ_Load(System.Object,System.EventArgs)">
+	<summary>
+ loadイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.受診者マスタ_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+	<summary>
+ keyDownイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.initIndBox">
+	<summary>
+ 事業所名ボックス初期設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.initDgvMaster">
+	<summary>
+ データグリッドビュー初期設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.initPrintState">
+	<summary>
+ 印刷ラジオボタン初期値設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.rbtnPreview_CheckedChanged(System.Object,System.EventArgs)">
+	<summary>
+ ﾌﾟﾚﾋﾞｭｰラジオボタン値変更イベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.rbtnPrint_CheckedChanged(System.Object,System.EventArgs)">
+	<summary>
+ 印刷ラジオボタン値変更イベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.displayDgvMaster(System.String)">
+	<summary>
+ 対象事業所のデータ一覧表示
+ </summary>
+	<param name="ind">事業所名</param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.indBox_SelectedValueChanged(System.Object,System.EventArgs)">
+	<summary>
+ 事業所名ボックス値変更イベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.dgvMaster_CellMouseClick(System.Object,System.Windows.Forms.DataGridViewCellMouseEventArgs)">
+	<summary>
+ セルマウスクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.dgvMaster_CellFormatting(System.Object,System.Windows.Forms.DataGridViewCellFormattingEventArgs)">
+	<summary>
+ cellFormatingイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.dgvMaster_CellPainting(System.Object,System.Windows.Forms.DataGridViewCellPaintingEventArgs)">
+	<summary>
+ CellPaintingイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.dgvMaster_ColumnHeaderMouseDoubleClick(System.Object,System.Windows.Forms.DataGridViewCellMouseEventArgs)">
+	<summary>
+ 列ヘッダーダブルクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.btnRegist_Click(System.Object,System.EventArgs)">
+	<summary>
+ 登録ボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者マスタ.btnDelete_Click(System.Object,System.EventArgs)">
+	<summary>
+ 削除ボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.Util.EnableDoubleBuffering(System.Windows.Forms.Control)">
 	<summary>
  コントロールのDoubleBufferedプロパティをTrueにする
  </summary>
