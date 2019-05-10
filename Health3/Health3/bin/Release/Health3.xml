@@ -6,36 +6,7 @@ Health3
 </name>
 </assembly>
 <members>
-<member name="M:Health3.resultInputForm.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean)">
-	<summary>
- コンストラクタ
- </summary>
-	<param name="ind"></param>
-	<param name="bango"></param>
-	<param name="nam"></param>
-	<param name="kana"></param>
-	<param name="sex"></param>
-	<param name="birth"></param>
-	<param name="printState"></param>
-	<remarks></remarks>
-</member><member name="M:Health3.resultInputForm.resultInputForm_Load(System.Object,System.EventArgs)">
-	<summary>
- loadイベント
- </summary>
-	<param name="sender"></param>
-	<param name="e"></param>
-	<remarks></remarks>
-</member><member name="M:Health3.resultInputForm.initHistoryListBox">
-	<summary>
- 履歴リスト初期設定
- </summary>
-	<remarks></remarks>
-</member><member name="M:Health3.resultInputForm.initDgvInput">
-	<summary>
- データグリッドビュー初期設定
- </summary>
-	<remarks></remarks>
-</member><member name="M:Health3.beforePrintForm.#ctor(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
+<member name="M:Health3.beforePrintForm.#ctor(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
 	<summary>
  コンストラクタ
  </summary>
@@ -233,6 +204,54 @@ Health3
  </summary>
 	<param name="birthYmd"></param>
 	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputDataGridView.dgvTextBox_KeyPress(System.Object,System.Windows.Forms.KeyPressEventArgs)">
+	<summary>
+ 総合判定入力テキストボックス用KeyPressイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean)">
+	<summary>
+ コンストラクタ
+ </summary>
+	<param name="ind"></param>
+	<param name="bango"></param>
+	<param name="nam"></param>
+	<param name="kana"></param>
+	<param name="sex"></param>
+	<param name="birth"></param>
+	<param name="printState"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.resultInputForm_Load(System.Object,System.EventArgs)">
+	<summary>
+ loadイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.initHistoryListBox">
+	<summary>
+ 履歴リスト初期設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.initCellStyle">
+	<summary>
+ セルスタイル作成
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.initDgvInput">
+	<summary>
+ データグリッドビュー初期設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.YmdBox_keyDownEnterOrDown(System.Object,System.EventArgs)">
+	<summary>
+ 日付ボックスエンターキー押下イベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
 	<remarks></remarks>
 </member><member name="M:Health3.TopForm.TopForm_Load(System.Object,System.EventArgs)">
 	<summary>

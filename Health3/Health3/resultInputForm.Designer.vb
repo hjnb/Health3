@@ -210,14 +210,14 @@ Partial Class resultInputForm
         Me.dgvInput.Location = New System.Drawing.Point(35, 122)
         Me.dgvInput.Name = "dgvInput"
         Me.dgvInput.RowTemplate.Height = 21
-        Me.dgvInput.Size = New System.Drawing.Size(838, 547)
+        Me.dgvInput.Size = New System.Drawing.Size(838, 579)
         Me.dgvInput.TabIndex = 54
         '
         'resultInputForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(928, 685)
+        Me.ClientSize = New System.Drawing.Size(928, 709)
         Me.Controls.Add(Me.dgvInput)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.syuBox)
