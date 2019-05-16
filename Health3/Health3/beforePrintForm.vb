@@ -58,7 +58,7 @@ Public Class beforePrintForm
         objExcel.ScreenUpdating = False
 
         '受診日
-        oSheet.Range("S3").Value = "受診日：　　　　　年　　　　月　　　　日 (　　　　　　)"
+        oSheet.Range("S3").Value = "受診日：令和　　　　年　　　　月　　　　日 (　　　　　　)"
         'カナ
         oSheet.Range("H5").Value = kana
         '氏名
@@ -66,8 +66,8 @@ Public Class beforePrintForm
         '性別
         oSheet.Range("L8").Value = If(sex = 1, "①　男　・　2　女", "1　男　・　②　女")
         '生年月日
-        Dim wareki As String = Util.convADStrToWarekiStr(birth)
-        Dim age As Integer = Util.calcAge(birth, Today.ToString("yyyy/MM/dd"))
+        Dim wareki As String = birth
+        Dim age As Integer = Util.calcAge(Util.convWarekiStrToADStr(birth), Today.ToString("yyyy/MM/dd"))
         oSheet.Range("H9").Value = wareki.Split("/")(0) & "　年　" & wareki.Split("/")(1) & "　月　" & wareki.Split("/")(2) & "　日"
         oSheet.Range("O9").Value = age & "　歳"
         '事業所名

@@ -231,6 +231,11 @@ Health3
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.loadIndInfo">
+	<summary>
+ 事業所情報取得
+ </summary>
+	<remarks></remarks>
 </member><member name="M:Health3.resultInputForm.initHistoryListBox">
 	<summary>
  履歴リスト初期設定
@@ -246,9 +251,55 @@ Health3
  データグリッドビュー初期設定
  </summary>
 	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.clearInput">
+	<summary>
+ 入力内容クリア
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.displayKenData(System.Object)">
+	<summary>
+ 結果データ表示
+ </summary>
+	<param name="ymd">日付(yyyy/MM/dd)</param>
+	<remarks></remarks>
 </member><member name="M:Health3.resultInputForm.YmdBox_keyDownEnterOrDown(System.Object,System.EventArgs)">
 	<summary>
  日付ボックスエンターキー押下イベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.historyListBox_SelectedValueChanged(System.Object,System.EventArgs)">
+	<summary>
+ 履歴リストボックス値変更イベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.btnRegist_Click(System.Object,System.EventArgs)">
+	<summary>
+ 登録ボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.btnDelete_Click(System.Object,System.EventArgs)">
+	<summary>
+ 削除ボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.btnClear_Click(System.Object,System.EventArgs)">
+	<summary>
+ クリアボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputForm.btnPrint_Click(System.Object,System.EventArgs)">
+	<summary>
+ 印刷ボタンクリックイベント
  </summary>
 	<param name="sender"></param>
 	<param name="e"></param>

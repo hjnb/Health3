@@ -6,8 +6,30 @@ Public Class resultInputDataGridView
     '文字数制限用
     Private Const LIMIT_LENGTH_BYTE As Integer = 60
 
+    '標準体重算出用BMI
+    Private Const STANDARD_BMI As Double = 22
+
     Protected Overrides Function ProcessDialogKey(keyData As System.Windows.Forms.Keys) As Boolean
-        Return MyBase.ProcessDialogKey(keyData)
+        Dim currentRowIndex As Integer = Me.CurrentCell.RowIndex
+        Dim currentColumnIndex As Integer = Me.CurrentCell.ColumnIndex
+        If keyData = Keys.Enter Then
+            If currentColumnIndex = 1 Then '結果列に移動
+                Me.CurrentCell = Me("Result", currentRowIndex)
+                Me.BeginEdit(True)
+            ElseIf currentColumnIndex = 4 Then
+                Dim targetRowNumber() As Integer = {16, 21, 25, 34, 39, 40, 49, 62, 64, 66, 72, 75, 77, 78, 79, 81, 82, 84, 87}
+                If Array.IndexOf(targetRowNumber, currentRowIndex) >= 0 Then
+                    Me.CurrentCell = Me("Kubun", currentRowIndex + 1)
+                    Me.BeginEdit(True)
+                ElseIf currentRowIndex = 85 Then
+                    Me.CurrentCell = Me("Kubun", 87)
+                    Me.BeginEdit(True)
+                End If
+            End If
+            Return False
+        Else
+            Return MyBase.ProcessDialogKey(keyData)
+        End If
     End Function
 
     Protected Overrides Function ProcessDataGridViewKey(e As System.Windows.Forms.KeyEventArgs) As Boolean
@@ -23,7 +45,7 @@ Public Class resultInputDataGridView
         Dim currentCellRowIndex As Integer = Me.CurrentCell.RowIndex
         Dim currentCellColumnIndex As Integer = Me.CurrentCell.ColumnIndex
 
-        '身長 or 体重を入力後、bmi算出
+        '身長 or 体重を入力後、標準体重とbmi算出、BMIの値で指導区分を算出
         If currentCellColumnIndex = 4 AndAlso (currentCellRowIndex = 0 OrElse currentCellRowIndex = 1) Then
             Dim heightStr As String = Util.checkDBNullValue(Me("Result", 0).Value)
             Dim weightStr As String = Util.checkDBNullValue(Me("Result", 1).Value)
@@ -31,12 +53,22 @@ Public Class resultInputDataGridView
                 Dim height As Double = heightStr
                 Dim weight As Double = weightStr
                 Dim bmi As Double = Math.Round(weight / ((height / 100) * (height / 100)), 1, MidpointRounding.AwayFromZero)
-                Dim standardWeight As Double = Math.Round(21.5 * (height / 100) * (height / 100), 1, MidpointRounding.AwayFromZero)
+                Dim standardWeight As Double = Math.Round(STANDARD_BMI * (height / 100) * (height / 100), 1, MidpointRounding.AwayFromZero)
                 Me("Result", 3).Value = bmi.ToString("#.0")
                 Me("Result", 2).Value = standardWeight.ToString("#.0")
+                '指導区分
+                If 18.5 <= bmi AndAlso bmi < 25.0 Then
+                    Me("Kubun", 0).Value = "1"
+                Else
+                    Me("Kubun", 0).Value = "3"
+                End If
             Else
+                'BMI
                 Me("Result", 3).Value = ""
+                '標準体重
                 Me("Result", 2).Value = ""
+                '指導区分
+                Me("Kubun", 0).Value = ""
             End If
         End If
     End Sub
@@ -82,6 +114,13 @@ Public Class resultInputDataGridView
 
             '横線(3列目～)
             If e.ColumnIndex >= 2 AndAlso (e.RowIndex = 4 OrElse e.RowIndex = 6 OrElse e.RowIndex = 7 OrElse e.RowIndex = 8 OrElse e.RowIndex = 9 OrElse e.RowIndex = 13 OrElse e.RowIndex = 19 OrElse e.RowIndex = 21 OrElse e.RowIndex = 23 OrElse e.RowIndex = 24 OrElse e.RowIndex = 25 OrElse e.RowIndex = 27 OrElse e.RowIndex = 28 OrElse e.RowIndex = 29 OrElse e.RowIndex = 30 OrElse e.RowIndex = 36 OrElse e.RowIndex = 37 OrElse e.RowIndex = 39 OrElse e.RowIndex = 43 OrElse e.RowIndex = 44 OrElse e.RowIndex = 45 OrElse e.RowIndex = 51 OrElse e.RowIndex = 52 OrElse e.RowIndex = 53 OrElse e.RowIndex = 54 OrElse e.RowIndex = 82 OrElse e.RowIndex = 88 OrElse e.RowIndex = 91) Then
+                With e.CellBounds
+                    .Offset(0, -1)
+                    e.Graphics.DrawLine(New Pen(Color.FromKnownColor(KnownColor.ControlDark)), .Left, .Top, .Right, .Top)
+                End With
+            End If
+            'とりあえず
+            If e.ColumnIndex = 1 AndAlso e.RowIndex = 88 Then
                 With e.CellBounds
                     .Offset(0, -1)
                     e.Graphics.DrawLine(New Pen(Color.FromKnownColor(KnownColor.ControlDark)), .Left, .Top, .Right, .Top)
