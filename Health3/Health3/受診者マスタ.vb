@@ -263,7 +263,11 @@ Public Class 受診者マスタ
                 .HeaderText = "実施日"
                 .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
                 .SortMode = DataGridViewColumnSortMode.NotSortable
-                .Width = 95
+                If dgvMaster.Rows.Count >= 21 Then
+                    .Width = 95
+                Else
+                    .Width = 112
+                End If
                 .ReadOnly = True
             End With
             With .Columns("Tel")

@@ -508,6 +508,9 @@ Public Class resultInputForm
                 Next
             End With
         End With
+
+        '性別設定
+        dgvInput.sex = sex
     End Sub
 
     ''' <summary>
