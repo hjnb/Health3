@@ -35,6 +35,21 @@ Public Class resultInputDataGridView
                 ElseIf currentRowIndex = 85 Then
                     Me.CurrentCell = Me("Kubun", 87)
                     Me.BeginEdit(True)
+                ElseIf currentRowIndex = 1 Then
+                    Me.CurrentCell = Me("Result", 4)
+                    Return True
+                ElseIf currentRowIndex = 37 Then
+                    Me.CurrentCell = Me("Result", 39)
+                    Return True
+                ElseIf currentRowIndex = 41 Then
+                    Me.CurrentCell = Me("Result", 43)
+                    Return True
+                ElseIf currentRowIndex = 88 Then
+                    Me.CurrentCell = Me("Result", 91)
+                    Return True
+                ElseIf currentRowIndex = 91 Then
+                    Me.CurrentCell = Me("Result", 93)
+                    Return True
                 End If
             End If
             Return False
