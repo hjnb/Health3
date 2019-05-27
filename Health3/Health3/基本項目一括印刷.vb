@@ -188,6 +188,21 @@ Public Class 基本項目一括印刷
     End Sub
 
     ''' <summary>
+    ''' 全チェックボタンクリックイベント
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnCheckAll_Click(sender As System.Object, e As System.EventArgs) Handles btnCheckAll.Click
+        If dgvNamList.Rows.Count > 0 Then
+            For Each row As DataGridViewRow In dgvNamList.Rows
+                row.Cells("Check").Value = allCheckFlg
+            Next
+            allCheckFlg = Not allCheckFlg
+        End If
+    End Sub
+
+    ''' <summary>
     ''' 印刷ボタンクリックイベント
     ''' </summary>
     ''' <param name="sender"></param>
