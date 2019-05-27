@@ -53,6 +53,7 @@ Partial Class 受診者マスタ
         Me.rbtnPreview = New System.Windows.Forms.RadioButton()
         Me.rbtnPrint = New System.Windows.Forms.RadioButton()
         Me.dgvMaster = New System.Windows.Forms.DataGridView()
+        Me.btnBasicPaperPrint = New System.Windows.Forms.Button()
         CType(Me.dgvMaster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -364,11 +365,21 @@ Partial Class 受診者マスタ
         Me.dgvMaster.Size = New System.Drawing.Size(779, 402)
         Me.dgvMaster.TabIndex = 30
         '
+        'btnBasicPaperPrint
+        '
+        Me.btnBasicPaperPrint.Location = New System.Drawing.Point(916, 274)
+        Me.btnBasicPaperPrint.Name = "btnBasicPaperPrint"
+        Me.btnBasicPaperPrint.Size = New System.Drawing.Size(130, 36)
+        Me.btnBasicPaperPrint.TabIndex = 120
+        Me.btnBasicPaperPrint.Text = "基本項目一括印刷"
+        Me.btnBasicPaperPrint.UseVisualStyleBackColor = True
+        '
         '受診者マスタ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(927, 691)
+        Me.ClientSize = New System.Drawing.Size(1075, 691)
+        Me.Controls.Add(Me.btnBasicPaperPrint)
         Me.Controls.Add(Me.dgvMaster)
         Me.Controls.Add(Me.rbtnPrint)
         Me.Controls.Add(Me.rbtnPreview)
@@ -438,4 +449,5 @@ Partial Class 受診者マスタ
     Friend WithEvents rbtnPreview As System.Windows.Forms.RadioButton
     Friend WithEvents rbtnPrint As System.Windows.Forms.RadioButton
     Friend WithEvents dgvMaster As System.Windows.Forms.DataGridView
+    Friend WithEvents btnBasicPaperPrint As System.Windows.Forms.Button
 End Class

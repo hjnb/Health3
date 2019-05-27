@@ -54,6 +54,7 @@ Public Class beforePrintForm
         Dim objWorkBooks As Excel.Workbooks = objExcel.Workbooks
         Dim objWorkBook As Excel.Workbook = objWorkBooks.Open(TopForm.excelFilePass)
         Dim oSheet As Excel.Worksheet = objWorkBook.Worksheets("診断書２改")
+        Dim xlShapes As Excel.Shapes = DirectCast(oSheet.Shapes, Excel.Shapes)
         objExcel.Calculation = Excel.XlCalculation.xlCalculationManual
         objExcel.ScreenUpdating = False
 
@@ -72,6 +73,13 @@ Public Class beforePrintForm
         oSheet.Range("O9").Value = age & "　歳"
         '事業所名
         oSheet.Range("W5").Value = ind
+
+        Dim image2aPath As String = TopForm.health3aPath '胸部画像
+        Dim image2bPath As String = TopForm.health3bPath '胃部画像
+        Dim cell As Excel.Range = DirectCast(oSheet.Cells(24, "S"), Excel.Range)
+        xlShapes.AddPicture(image2aPath, False, True, cell.Left, cell.Top, 70, 60)
+        cell = DirectCast(oSheet.Cells(31, "S"), Excel.Range)
+        xlShapes.AddPicture(image2bPath, False, True, cell.Left, cell.Top, 60, 50)
 
         objExcel.Calculation = Excel.XlCalculation.xlCalculationAutomatic
         objExcel.ScreenUpdating = True

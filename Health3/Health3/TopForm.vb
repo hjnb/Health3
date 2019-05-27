@@ -11,6 +11,8 @@
 
     '画像パス
     Public imageFilePath As String = My.Application.Info.DirectoryPath & "\Health3.PNG"
+    Public health3aPath As String = My.Application.Info.DirectoryPath & "\Health3a.PNG"
+    Public health3bPath As String = My.Application.Info.DirectoryPath & "\Health3b.PNG"
 
     'Diagnoseのデータベースパス
     Public dbDiagnoseFilePath As String = Util.getIniString("System", "DiagnoseDir", iniFilePath) & "\Diagnose.mdb"
@@ -56,6 +58,18 @@
 
         If Not System.IO.File.Exists(imageFilePath) Then
             MsgBox("画像ファイルが存在しません。ファイルを配置して下さい。")
+            Me.Close()
+            Exit Sub
+        End If
+
+        If Not System.IO.File.Exists(health3aPath) Then
+            MsgBox("胸部画像ファイルが存在しません。ファイルを配置して下さい。")
+            Me.Close()
+            Exit Sub
+        End If
+
+        If Not System.IO.File.Exists(health3bPath) Then
+            MsgBox("胃部画像ファイルが存在しません。ファイルを配置して下さい。")
             Me.Close()
             Exit Sub
         End If
