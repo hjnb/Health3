@@ -205,6 +205,18 @@ Health3
 	<param name="birthYmd"></param>
 	<returns></returns>
 	<remarks></remarks>
+</member><member name="M:Health3.resultInputDataGridView.resultInputDataGridView_CellEndEdit(System.Object,System.Windows.Forms.DataGridViewCellEventArgs)">
+	<summary>
+ 検査結果列入力時の指導区分等算出処理
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.resultInputDataGridView.decisionMetabo">
+	<summary>
+ ﾒﾀﾎﾞﾘｯｸｼﾝﾄﾞﾛｰﾑ判定
+ </summary>
+	<remarks></remarks>
 </member><member name="M:Health3.resultInputDataGridView.dgvTextBox_KeyPress(System.Object,System.Windows.Forms.KeyPressEventArgs)">
 	<summary>
  総合判定入力テキストボックス用KeyPressイベント

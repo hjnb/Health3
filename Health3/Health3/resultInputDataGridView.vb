@@ -52,6 +52,12 @@ Public Class resultInputDataGridView
         End If
     End Function
 
+    ''' <summary>
+    ''' 検査結果列入力時の指導区分等算出処理
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub resultInputDataGridView_CellEndEdit(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles Me.CellEndEdit
         Dim currentCellRowIndex As Integer = Me.CurrentCell.RowIndex
         Dim currentCellColumnIndex As Integer = Me.CurrentCell.ColumnIndex
@@ -118,6 +124,9 @@ Public Class resultInputDataGridView
             Else
                 Me("Kubun", 17).Value = ""
             End If
+
+            '入力時にメタボ判定
+            decisionMetabo()
         ElseIf currentCellColumnIndex = 4 AndAlso (currentCellRowIndex = 22 OrElse currentCellRowIndex = 23 OrElse currentCellRowIndex = 24) Then
             '脂質
             Dim kubun As Integer = 0
@@ -168,6 +177,11 @@ Public Class resultInputDataGridView
                     hKubun = 4
                 End If
                 kubun = If(kubun <= hKubun, hKubun, kubun)
+            End If
+
+            '中性脂肪、HDL入力時にメタボ判定
+            If currentCellRowIndex = 23 OrElse currentCellRowIndex = 24 Then
+                decisionMetabo()
             End If
 
             '指導区分
@@ -340,6 +354,12 @@ Public Class resultInputDataGridView
                 End If
                 kubun = If(kubun <= tKubun, tKubun, kubun)
             End If
+
+            '血糖入力時にメタボ判定
+            If currentCellRowIndex = 35 Then
+                decisionMetabo()
+            End If
+
             '指導区分
             Me("Kubun", 35).Value = If(kubun = 0, "", kubun)
         ElseIf currentCellColumnIndex = 4 AndAlso currentCellRowIndex = 40 Then
@@ -580,8 +600,84 @@ Public Class resultInputDataGridView
             End If
             '指導区分
             Me("Kubun", 80).Value = If(kubun = 0, "", kubun)
+        ElseIf currentCellColumnIndex = 4 AndAlso (currentCellRowIndex = 4) Then
+            '腹囲の入力時にメタボ判定
+            decisionMetabo()
         End If
 
+    End Sub
+
+    ''' <summary>
+    ''' ﾒﾀﾎﾞﾘｯｸｼﾝﾄﾞﾛｰﾑ判定
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub decisionMetabo()
+        '腹囲未入力　　　　　　　　　 ：4
+        '腹囲条件非該当　　　　　　　 ：3
+        '腹囲条件のみ該当　　　　　　 ：2
+        '腹囲条件該当且つ他項目1つ該当：2
+        '腹囲条件該当且つ他項目2つ該当：1
+        Dim metabo As Integer
+
+        '腹囲条件判定
+        Dim hukuiStr As String = Util.checkDBNullValue(Me("Result", 4).Value)
+        If System.Text.RegularExpressions.Regex.IsMatch(hukuiStr, "^\d+(\.\d+)?$") Then
+            Dim hukui As Double = CDbl(hukuiStr)
+            If (sex = "1" AndAlso 85 <= hukui) OrElse (sex = "2" AndAlso 90 <= hukui) Then
+                metabo = 2
+                Me("Result", 100).Value = metabo
+            Else
+                metabo = 3
+                Me("Result", 100).Value = metabo
+            End If
+        Else
+            metabo = 4
+            Me("Result", 100).Value = metabo
+        End If
+
+        '他項目条件該当数
+        Dim count As Integer = 0
+
+        '中性脂肪
+        Dim tyuseiStr As String = Util.checkDBNullValue(Me("Result", 23).Value)
+        If System.Text.RegularExpressions.Regex.IsMatch(tyuseiStr, "^\d+$") Then
+            Dim tyusei As Integer = CInt(tyuseiStr)
+            If 150 <= tyusei Then
+                count += 1
+            End If
+        End If
+        'ＨＤＬ
+        Dim hdlStr As String = Util.checkDBNullValue(Me("Result", 24).Value)
+        If System.Text.RegularExpressions.Regex.IsMatch(hdlStr, "^\d+$") Then
+            Dim hdl As Integer = CInt(hdlStr)
+            If hdl <= 40 Then
+                count += 1
+            End If
+        End If
+        '血圧　最高、最低
+        Dim highStr As String = Util.checkDBNullValue(Me("Result", 17).Value)
+        Dim lowStr As String = Util.checkDBNullValue(Me("Result", 19).Value)
+        If System.Text.RegularExpressions.Regex.IsMatch(highStr, "^\d+$") AndAlso System.Text.RegularExpressions.Regex.IsMatch(lowStr, "^\d+$") Then
+            Dim high As Integer = CInt(highStr)
+            Dim low As Integer = CInt(lowStr)
+            If 130 <= high AndAlso 85 <= low Then
+                count += 1
+            End If
+        End If
+        '血糖
+        Dim ketoStr As String = Util.checkDBNullValue(Me("Result", 35).Value)
+        If System.Text.RegularExpressions.Regex.IsMatch(ketoStr, "^\d+$") Then
+            Dim keto As Integer = CInt(ketoStr)
+            If 110 <= keto Then
+                count += 1
+            End If
+        End If
+
+        '腹囲条件該当且つ他項目2つ以上該当
+        If metabo = 2 AndAlso 2 <= count Then
+            metabo = 1
+            Me("Result", 100).Value = metabo
+        End If
     End Sub
 
     Private Sub resultInputDataGridView_CellPainting(sender As Object, e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles Me.CellPainting
