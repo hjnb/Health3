@@ -45,6 +45,7 @@ Partial Class 事業所マスタ
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnPrint = New System.Windows.Forms.Button()
         Me.dgvIndM = New System.Windows.Forms.DataGridView()
+        Me.Label14 = New System.Windows.Forms.Label()
         CType(Me.dgvIndM, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -273,11 +274,23 @@ Partial Class 事業所マスタ
         Me.dgvIndM.Size = New System.Drawing.Size(998, 312)
         Me.dgvIndM.TabIndex = 29
         '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("MS UI Gothic", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+        Me.Label14.ForeColor = System.Drawing.Color.Blue
+        Me.Label14.Location = New System.Drawing.Point(355, 275)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(200, 14)
+        Me.Label14.TabIndex = 32
+        Me.Label14.Text = "ﾀﾞﾌﾞﾙｸﾘｯｸした項目名で並べます。"
+        '
         '事業所マスタ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1053, 645)
+        Me.Controls.Add(Me.Label14)
         Me.Controls.Add(Me.dgvIndM)
         Me.Controls.Add(Me.btnPrint)
         Me.Controls.Add(Me.btnDelete)
@@ -331,4 +344,5 @@ Partial Class 事業所マスタ
     Friend WithEvents btnDelete As System.Windows.Forms.Button
     Friend WithEvents btnPrint As System.Windows.Forms.Button
     Friend WithEvents dgvIndM As System.Windows.Forms.DataGridView
+    Friend WithEvents Label14 As System.Windows.Forms.Label
 End Class

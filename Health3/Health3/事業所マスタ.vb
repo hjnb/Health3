@@ -1,4 +1,6 @@
 ﻿Imports System.Data.OleDb
+Imports Microsoft.Office.Interop
+Imports System.Runtime.InteropServices
 
 Public Class 事業所マスタ
 
@@ -126,6 +128,9 @@ Public Class 事業所マスタ
         '表示
         dgvIndM.DataSource = dt
         cnn.Close()
+        If Not IsNothing(dgvIndM.CurrentRow) Then
+            dgvIndM.CurrentRow.Selected = False
+        End If
 
         '幅設定等
         With dgvIndM
@@ -244,7 +249,7 @@ Public Class 事業所マスタ
             Dim tel As String = Util.checkDBNullValue(dgvIndM("Tel", e.RowIndex).Value)
             Dim fax As String = Util.checkDBNullValue(dgvIndM("Fax", e.RowIndex).Value)
             Dim tanto As String = Util.checkDBNullValue(dgvIndM("Tanto", e.RowIndex).Value)
-            
+
             '値をセット
             indBox.Text = ind
             kanaBox.Text = kana
@@ -288,5 +293,258 @@ Public Class 事業所マスタ
             '描画が完了したことを知らせる
             e.Handled = True
         End If
+    End Sub
+
+    ''' <summary>
+    ''' 登録ボタンクリックイベント
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnRegist_Click(sender As System.Object, e As System.EventArgs) Handles btnRegist.Click
+        '事業所名
+        Dim ind As String = indBox.Text
+        If ind = "" Then
+            MsgBox("事業所名を入力して下さい。", MsgBoxStyle.Exclamation)
+            indBox.Focus()
+            Return
+        End If
+        'カナ
+        Dim kana As String = kanaBox.Text
+        If kana = "" Then
+            MsgBox("カナを入力して下さい。", MsgBoxStyle.Exclamation)
+            kanaBox.Focus()
+            Return
+        End If
+        '健保記号(4桁)
+        Dim kigo4 As String = kigo4Box.Text
+        If Not System.Text.RegularExpressions.Regex.IsMatch(kigo4, "^\d\d\d\d$") Then
+            MsgBox("健保記号は4桁の数値を入力して下さい。", MsgBoxStyle.Exclamation)
+            kigo4Box.Focus()
+            Return
+        End If
+        '健保符号(6桁)
+        Dim fugo6 As String = fugo6Box.Text
+        If Not System.Text.RegularExpressions.Regex.IsMatch(fugo6, "^\d\d\d\d\d\d$") Then
+            MsgBox("健保符号は6桁の数値を入力して下さい。", MsgBoxStyle.Exclamation)
+            fugo6Box.Focus()
+            Return
+        End If
+        '〒
+        Dim post As String = postBox.Text
+        '住所
+        Dim jyu As String = jyuBox.Text
+        'TEL
+        Dim tel As String = telBox.Text
+        'FAX
+        Dim fax As String = faxBox.Text
+        '担当者
+        Dim tanto As String = tantoBox.Text
+
+        '登録
+        Dim cn As New ADODB.Connection()
+        cn.Open(TopForm.DB_Health3)
+        Dim sql As String = "select * from IndM where Ind = '" & ind & "'"
+        Dim rs As New ADODB.Recordset
+        rs.Open(sql, cn, ADODB.CursorTypeEnum.adOpenKeyset, ADODB.LockTypeEnum.adLockOptimistic)
+        If rs.RecordCount <= 0 Then
+            '新規登録
+            rs.AddNew()
+            rs.Fields("Ind").Value = ind
+            rs.Fields("Kana").Value = kana
+            rs.Fields("Kigo4").Value = kigo4
+            rs.Fields("Fugo6").Value = fugo6
+            rs.Fields("Post").Value = post
+            rs.Fields("Jyu").Value = jyu
+            rs.Fields("Tel").Value = tel
+            rs.Fields("Fax").Value = fax
+            rs.Fields("Tanto").Value = tanto
+            rs.Update()
+            rs.Close()
+            cn.Close()
+
+            '再表示
+            displayDgvIndM()
+        Else
+            '更新登録
+            Dim result As DialogResult = MessageBox.Show("変更してよろしいですか？", "変更", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If result = Windows.Forms.DialogResult.Yes Then
+                rs.Fields("Ind").Value = ind
+                rs.Fields("Kana").Value = kana
+                rs.Fields("Kigo4").Value = kigo4
+                rs.Fields("Fugo6").Value = fugo6
+                rs.Fields("Post").Value = post
+                rs.Fields("Jyu").Value = jyu
+                rs.Fields("Tel").Value = tel
+                rs.Fields("Fax").Value = fax
+                rs.Fields("Tanto").Value = tanto
+                rs.Update()
+                rs.Close()
+                cn.Close()
+
+                '再表示
+                displayDgvIndM()
+            Else
+                rs.Close()
+                cn.Close()
+            End If
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' クリアボタンクリックイベント
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnClear_Click(sender As System.Object, e As System.EventArgs) Handles btnClear.Click
+        clearInput()
+        If Not IsNothing(dgvIndM.CurrentRow) Then
+            dgvIndM.CurrentRow.Selected = False
+        End If
+        indBox.Focus()
+    End Sub
+
+    ''' <summary>
+    ''' 削除ボタンクリックイベント
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnDelete_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete.Click
+        '事業所名
+        Dim ind As String = indBox.Text
+        If ind = "" Then
+            MsgBox("事業所名を入力して下さい。", MsgBoxStyle.Exclamation)
+            indBox.Focus()
+            Return
+        End If
+
+        '削除
+        Dim cn As New ADODB.Connection()
+        cn.Open(TopForm.DB_Health3)
+        Dim sql As String = "select * from IndM where Ind = '" & ind & "'"
+        Dim rs As New ADODB.Recordset
+        rs.Open(sql, cn, ADODB.CursorTypeEnum.adOpenKeyset, ADODB.LockTypeEnum.adLockOptimistic)
+        If rs.RecordCount <= 0 Then
+            MsgBox("登録されていません。", MsgBoxStyle.Exclamation)
+            rs.Close()
+            cn.Close()
+            Return
+        Else
+            Dim result As DialogResult = MessageBox.Show("削除してよろしいですか？", "削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If result = Windows.Forms.DialogResult.Yes Then
+                rs.Delete()
+                rs.Update()
+                rs.Close()
+                cn.Close()
+
+                '再表示
+                displayDgvIndM()
+            Else
+                rs.Close()
+                cn.Close()
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' 印刷ボタンクリックイベント
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnPrint_Click(sender As System.Object, e As System.EventArgs) Handles btnPrint.Click
+        '件数
+        Dim rowsCount As Integer = dgvIndM.Rows.Count
+
+        '現在日付
+        Dim nowYmd As String = DateTime.Now.ToString("yyyy/MM/dd")
+
+        '貼り付けデータ作成
+        Dim dataList As New List(Of String(,))
+        Dim dataArray(35, 10) As String
+        Dim arrayRowIndex As Integer = 0
+        For i As Integer = 0 To rowsCount - 1
+            If arrayRowIndex = 36 Then
+                dataList.Add(dataArray.Clone())
+                Array.Clear(dataArray, 0, dataArray.Length)
+                arrayRowIndex = 0
+            End If
+
+            'No.
+            dataArray(arrayRowIndex, 0) = i + 1
+            '事業所名
+            dataArray(arrayRowIndex, 1) = Util.checkDBNullValue(dgvIndM("Ind", i).Value)
+            'ｶﾅ
+            dataArray(arrayRowIndex, 2) = Util.checkDBNullValue(dgvIndM("Kana", i).Value)
+            '記号
+            dataArray(arrayRowIndex, 3) = Util.checkDBNullValue(dgvIndM("Kigo4", i).Value)
+            '符号
+            dataArray(arrayRowIndex, 4) = Util.checkDBNullValue(dgvIndM("Fugo6", i).Value)
+            '登録数
+            dataArray(arrayRowIndex, 5) = Util.checkDBNullValue(dgvIndM("PCount", i).Value)
+            '最終日付
+            dataArray(arrayRowIndex, 6) = Util.checkDBNullValue(dgvIndM("MaxYmd", i).Value)
+            'TEL
+            dataArray(arrayRowIndex, 7) = Util.checkDBNullValue(dgvIndM("Tel", i).Value)
+            '担当者
+            dataArray(arrayRowIndex, 8) = Util.checkDBNullValue(dgvIndM("Tanto", i).Value)
+            '〒
+            dataArray(arrayRowIndex, 9) = Util.checkDBNullValue(dgvIndM("Post", i).Value)
+            '住所
+            dataArray(arrayRowIndex, 10) = Util.checkDBNullValue(dgvIndM("Jyu", i).Value)
+
+            arrayRowIndex += 1
+        Next
+        dataList.Add(dataArray.Clone())
+
+        'エクセル
+        Dim objExcel As Excel.Application = CreateObject("Excel.Application")
+        Dim objWorkBooks As Excel.Workbooks = objExcel.Workbooks
+        Dim objWorkBook As Excel.Workbook = objWorkBooks.Open(TopForm.excelFilePass)
+        Dim oSheet As Excel.Worksheet = objWorkBook.Worksheets("事業所一覧改")
+        objExcel.Calculation = Excel.XlCalculation.xlCalculationManual
+        objExcel.ScreenUpdating = False
+
+        '日付
+        oSheet.Range("G2").Value = nowYmd
+
+        '必要枚数コピペ
+        For i As Integer = 0 To dataList.Count - 2
+            Dim xlPasteRange As Excel.Range = oSheet.Range("A" & (41 + (40 * i))) 'ペースト先
+            oSheet.Rows("1:40").copy(xlPasteRange)
+            oSheet.HPageBreaks.Add(oSheet.Range("A" & (41 + (40 * i)))) '改ページ
+        Next
+
+        'データ貼り付け
+        For i As Integer = 0 To dataList.Count - 1
+            oSheet.Range("L" & (2 + 40 * i)).Value = (i + 1) & " 頁"
+            oSheet.Range("B" & (4 + 40 * i), "L" & (39 + 40 * i)).Value = dataList(i)
+        Next
+
+        objExcel.Calculation = Excel.XlCalculation.xlCalculationAutomatic
+        objExcel.ScreenUpdating = True
+
+        '変更保存確認ダイアログ非表示
+        objExcel.DisplayAlerts = False
+
+        '印刷
+        Dim printState As String = Util.getIniString("System", "Printer", TopForm.iniFilePath)
+        If printState = "Y" Then
+            oSheet.PrintOut()
+        ElseIf printState = "N" Then
+            objExcel.Visible = True
+            oSheet.PrintPreview(1)
+        End If
+
+        ' EXCEL解放
+        objExcel.Quit()
+        Marshal.ReleaseComObject(objWorkBook)
+        Marshal.ReleaseComObject(objExcel)
+        oSheet = Nothing
+        objWorkBook = Nothing
+        objExcel = Nothing
     End Sub
 End Class
