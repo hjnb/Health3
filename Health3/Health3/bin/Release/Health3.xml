@@ -323,6 +323,78 @@ Health3
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
+</member><member name="T:Health3.健診結果報告書.dgvRowHeaderCell">
+	<summary>
+ 行ヘッダーのカレントセルを表す三角マークを非表示に設定する為のクラス。
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.健診結果報告書_Load(System.Object,System.EventArgs)">
+	<summary>
+ loadイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.健診結果報告書_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+	<summary>
+ keyDownイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.initIndBox">
+	<summary>
+ 事業所名ボックス初期設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.initDgvResult">
+	<summary>
+ データグリッドビュー初期設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.initDtBaseVal">
+	<summary>
+ 基準値データ設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.dgvMaster_CellPainting(System.Object,System.Windows.Forms.DataGridViewCellPaintingEventArgs)">
+	<summary>
+ CellPaintingイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.displayDgvResult(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+	<summary>
+ 結果人数表示
+ </summary>
+	<param name="ind">事業所名</param>
+	<param name="fromYmd">from日付</param>
+	<param name="toYmd">to日付</param>
+	<param name="sijiList">医師指示対象文字列リスト</param>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.checkBaseValue(System.String,System.String,System.String)">
+	<summary>
+ 検査値が基準値範囲外かチェック
+ </summary>
+	<param name="resultValue">検査結果値</param>
+	<param name="itemName">検査項目名</param>
+	<returns>範囲内:true、範囲外:false</returns>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.btnExecute_Click(System.Object,System.EventArgs)">
+	<summary>
+ 実行ボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果報告書.btnPrint_Click(System.Object,System.EventArgs)">
+	<summary>
+ 印刷ボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
 </member><member name="M:Health3.TopForm.TopForm_Load(System.Object,System.EventArgs)">
 	<summary>
  loadイベント

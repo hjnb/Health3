@@ -39,7 +39,12 @@
     Private Sub TopForm_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         'データベース、エクセル、構成ファイルの存在チェック
         If Not System.IO.File.Exists(dbFilePath) Then
-            MsgBox("データベースファイルが存在しません。ファイルを配置して下さい。")
+            MsgBox("Health3データベースファイルが存在しません。ファイルを配置して下さい。")
+            Me.Close()
+            Exit Sub
+        End If
+        If Not System.IO.File.Exists(dbDiagnoseFilePath) Then
+            MsgBox("Diagnoseデータベースファイルが存在しません。" & Environment.NewLine & "iniファイルのDiagnoseDirに適切なパスを設定して下さい。")
             Me.Close()
             Exit Sub
         End If
