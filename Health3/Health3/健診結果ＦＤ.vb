@@ -35,18 +35,22 @@ Public Class 健診結果ＦＤ
     Private Sub 健診結果ＦＤ_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
 
-        '送付年月日、受診年月を現在日付に設定
+        '送付年月日を現在日付に設定
         sendDateBox.setADStr(Today.ToString("yyyy/MM/dd"))
-        dateBox.setADStr(Today.ToString("yyyy/MM/dd"))
 
         'データグリッドビュー初期設定
         initDgvResult()
         initDgvCount()
 
-        '当月受診データ表示
-        displayDgvResult(dateBox.getADymStr())
-        '受診者数表示
-        displayDgvCount(dateBox.getADymStr())
+        '受診月を先月、先月受診データ表示、先月までの受診者数表示
+        Dim prevYm As String = Today.AddMonths(-1).ToString("yyyy/MM") '先月(yyyy/MM)
+        dateBox.setADStr(prevYm & "/01")
+        displayDgvResult(prevYm)
+        displayDgvCount(prevYm)
+
+        '受診月の1桁目選択させる
+        'とりあえずの処理↓
+        SendKeys.Send("{RIGHT},{RIGHT},{RIGHT},{RIGHT},{RIGHT}")
     End Sub
 
     ''' <summary>
@@ -270,7 +274,7 @@ Public Class 健診結果ＦＤ
             Else
                 .Size = New Size(1052, 272)
             End If
-            
+
         End With
 
         'フォーカス
