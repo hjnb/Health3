@@ -49,11 +49,15 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ADBox">
+      <HintPath>..\..\..\adBox\ADBox\ADBox\bin\Release\ADBox.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -186,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="健診結果報告書.resx">
       <DependentUpon>健診結果報告書.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="健診結果ＦＤ.resx">
+      <DependentUpon>健診結果ＦＤ.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="受診者マスタ.resx">
       <DependentUpon>受診者マスタ.vb</DependentUpon>

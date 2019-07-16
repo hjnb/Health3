@@ -1066,11 +1066,13 @@ Public Class resultInputForm
         d(121) = Util.checkDBNullValue(dgvInput("Kubun", 35).Value)
         '空腹時血糖
         d(129) = Util.checkDBNullValue(dgvInput("Result", 35).Value)
+        '随時血糖
+        d(137) = Util.checkDBNullValue(dgvInput("Result", 39).Value)
         'ﾍﾓｸﾞﾛﾋﾞﾝＡ１ｃ
         d(151) = Util.checkDBNullValue(dgvInput("Result", 36).Value)
         '尿糖
         d(161) = Util.checkDBNullValue(dgvInput("Result", 37).Value)
-
+        
         '尿酸
         '指導区分
         d(163) = Util.checkDBNullValue(dgvInput("Kubun", 40).Value)
@@ -1315,6 +1317,7 @@ Public Class resultInputForm
 
         '登録
         Dim registNumber() As Integer = {2, 3, 6, 7, 9, 10, 11, 14, 17, 19, 21, 23, 25, 31, 33, 35, 38, 40, 42, 44, 46, 47, 48, 49, 50, 52, 54, 56, 60, 62, 65, 67, 69, 75, 81, 87, 89, 91, 95, 101, 103, 107, 109, 111, 113, 117, 121, 129, 137, 151, 161, 163, 165, 167, 171, 173, 174, 175, 176, 177, 178, 180, 182, 184, 186, 188, 190, 192, 194, 196, 198, 200, 204, 206, 208, 209, 211, 213, 214, 216, 218, 220, 222, 224, 225, 226, 228, 230, 232, 234, 236, 237, 238, 240, 241, 242, 243, 244, 246, 247, 249, 251, 253, 254, 255, 257, 258, 260, 262, 263, 265, 267, 268, 269, 270, 279, 281, 283, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312}
+        Dim emptyRegistNumber() As Integer = {8, 15, 27, 29, 37, 58, 64, 71, 73, 77, 79, 83, 85, 93, 97, 99, 105, 115, 119, 123, 125, 127, 131, 133, 135, 139, 141, 143, 145, 147, 149, 153, 155, 157, 159, 169, 202, 282, 284}
         Dim cn As New ADODB.Connection()
         cn.Open(TopForm.DB_Health3)
         Dim sql As String = "select * from KenD where Ind = '" & ind & "' and Kana = '" & kana & "' and D6 = '" & birth & "' and Ymd = '" & ymd & "'"
@@ -1326,6 +1329,9 @@ Public Class resultInputForm
         End If
         For Each num As Integer In registNumber
             rs.Fields("D" & num).Value = d(num)
+        Next
+        For Each num As Integer In emptyRegistNumber
+            rs.Fields("D" & num).Value = ""
         Next
         rs.Fields("Ind").Value = ind
         rs.Fields("Kana").Value = kana
