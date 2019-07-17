@@ -533,6 +533,99 @@ Health3
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
+</member><member name="T:Health3.事業所別実施履歴.dgvRowHeaderCell">
+	<summary>
+ 行ヘッダーのカレントセルを表す三角マークを非表示に設定する為のクラス。
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.事業所別実施履歴_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+	<summary>
+ keyDownイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.initIndList">
+	<summary>
+ 事業所リスト初期設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.initDgvList">
+	<summary>
+ データグリッドビュー初期設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.displayDgvList(System.String)">
+	<summary>
+ 対象事業所のリスト表示
+ </summary>
+	<param name="ind">事業所名</param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.dgvList_CellPainting(System.Object,System.Windows.Forms.DataGridViewCellPaintingEventArgs)">
+	<summary>
+ CellPaintingイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.initPrintState">
+	<summary>
+ 印刷ラジオボタン初期値設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.rbtnPreview_CheckedChanged(System.Object,System.EventArgs)">
+	<summary>
+ ﾌﾟﾚﾋﾞｭｰラジオボタン値変更イベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.rbtnPrint_CheckedChanged(System.Object,System.EventArgs)">
+	<summary>
+ 印刷ラジオボタン値変更イベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.indList_SelectedValueChanged(System.Object,System.EventArgs)">
+	<summary>
+ 事業所リスト値変更イベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.btnPrint_Click(System.Object,System.EventArgs)">
+	<summary>
+ 印刷ボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.btnEnvelope_Click(System.Object,System.EventArgs)">
+	<summary>
+ 封筒ボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.printNaga3(System.Collections.Generic.List{System.String})">
+	<summary>
+ 長形3号印刷
+ </summary>
+	<param name="namList"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.printNaga4(System.Collections.Generic.List{System.String})">
+	<summary>
+ 長形4号印刷
+ </summary>
+	<param name="namList"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.printKaku2(System.Collections.Generic.List{System.String})">
+	<summary>
+ 角形2号印刷
+ </summary>
+	<param name="namList"></param>
+	<remarks></remarks>
 </member><member name="T:Health3.事業所マスタ.dgvRowHeaderCell">
 	<summary>
  行ヘッダーのカレントセルを表す三角マークを非表示に設定する為のクラス。
