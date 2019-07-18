@@ -716,6 +716,55 @@ Health3
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
+</member><member name="T:Health3.受診者一覧.dgvRowHeaderCell">
+	<summary>
+ 行ヘッダーのカレントセルを表す三角マークを非表示に設定する為のクラス。
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者一覧.受診者一覧_Load(System.Object,System.EventArgs)">
+	<summary>
+ loadイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者一覧.initDgvList">
+	<summary>
+ データグリッドビュー初期設定
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者一覧.displayDgvList">
+	<summary>
+ データ表示
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者一覧.dgvList_CellPainting(System.Object,System.Windows.Forms.DataGridViewCellPaintingEventArgs)">
+	<summary>
+ CellPaintingイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者一覧.dgvList_ColumnHeaderMouseDoubleClick(System.Object,System.Windows.Forms.DataGridViewCellMouseEventArgs)">
+	<summary>
+ 列ヘッダーダブルクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者一覧.initialSearch(System.String)">
+	<summary>
+ 対象の頭文字までスクロール
+ </summary>
+	<param name="initialChar">頭文字</param>
+	<remarks></remarks>
+</member><member name="M:Health3.受診者一覧.btnSearchKana_Click(System.Object,System.EventArgs)">
+	<summary>
+ ｱ～ﾜボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
 </member><member name="M:Health3.基本項目一括印刷.#ctor(System.String,System.Boolean)">
 	<summary>
  コンストラクタ

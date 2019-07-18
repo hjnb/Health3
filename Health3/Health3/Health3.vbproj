@@ -200,6 +200,9 @@
     <EmbeddedResource Include="受診者マスタ.resx">
       <DependentUpon>受診者マスタ.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="受診者一覧.resx">
+      <DependentUpon>受診者一覧.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="基本項目一括印刷.resx">
       <DependentUpon>基本項目一括印刷.vb</DependentUpon>
     </EmbeddedResource>
