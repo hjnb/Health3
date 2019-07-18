@@ -171,7 +171,7 @@ Public Class 健診結果ＦＤ
         Dim cnn As New ADODB.Connection
         cnn.Open(TopForm.DB_Health3)
         Dim rs As New ADODB.Recordset
-        Dim sql As String = "select U.Ind, U.Nam, K.D6, K.Ymd, K.D2, K.D279, K.D242, K.D265, K.D249, K.D161 from KenD as K inner join UsrM as U on K.Kana = U.Kana and K.Ind = U.Ind where Ymd Like '" & ym & "%' order by Ymd, U.Ind, U.Kana"
+        Dim sql As String = "select U.Ind, U.Nam, U.Kana, K.* from KenD as K inner join UsrM as U on K.Kana = U.Kana and K.Ind = U.Ind where Ymd Like '" & ym & "%' order by Ymd, U.Ind, U.Kana"
         rs.Open(sql, cnn, ADODB.CursorTypeEnum.adOpenForwardOnly, ADODB.LockTypeEnum.adLockReadOnly)
         Dim da As OleDbDataAdapter = New OleDbDataAdapter()
         Dim ds As DataSet = New DataSet()
@@ -191,6 +191,15 @@ Public Class 健診結果ＦＤ
 
         '幅設定等
         With dgvResult
+
+            '非表示設定
+            Dim showColumnName() As String = {"Check", "U.Ind", "Nam", "D6", "Ymd", "D2", "D279", "D242", "D265", "D249", "D161"}
+            For Each col As DataGridViewColumn In .Columns
+                If Array.IndexOf(showColumnName, col.Name) < 0 Then
+                    col.Visible = False
+                End If
+            Next
+
             With .Columns("Check")
                 .DisplayIndex = 0
                 .HeaderText = ""
@@ -199,7 +208,7 @@ Public Class 健診結果ＦＤ
                 .Width = 35
                 .HeaderCell.Style.Font = New Font("ＭＳ Ｐゴシック", 9)
             End With
-            With .Columns("Ind")
+            With .Columns("U.Ind")
                 .HeaderText = "事業所名"
                 .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
                 .SortMode = DataGridViewColumnSortMode.NotSortable
