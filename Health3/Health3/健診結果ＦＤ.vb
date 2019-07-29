@@ -1253,7 +1253,18 @@ Public Class 健診結果ＦＤ
         Dim d279d As String = Util.checkDBNullValue(row.Cells("D279d").Value)
         Dim d279e As String = Util.checkDBNullValue(row.Cells("D279e").Value)
         Dim d279f As String = Util.checkDBNullValue(row.Cells("D279f").Value)
-        Dim d279Str As String = StrConv(d279a & d279b & d279c & d279d & d279e & d279f, VbStrConv.Wide)
+        Dim d279Str As String = ""
+        For Each s As String In {d279a, d279b, d279c, d279d, d279e, d279f}
+            If s = "" Then
+                Continue For
+            End If
+            If d279Str = "" Then
+                d279Str = s
+            Else
+                d279Str &= "／" & s
+            End If
+        Next
+        d279Str = StrConv(d279Str, VbStrConv.Wide)
         sb.Append(paddingZenkakuText(d279Str, 385))
         '医師の判断
         'ﾒﾀﾎﾞﾘｯｸｼﾝﾄﾞﾛｰﾑ判定(1)
