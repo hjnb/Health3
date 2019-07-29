@@ -25,7 +25,6 @@
     Dim examineeMasterForm As 受診者マスタ
     Dim officeMasterForm As 事業所マスタ
     Dim resultFDForm As 健診結果ＦＤ
-    Dim fdListForm As ＦＤﾘｽﾄ
     Dim examineeListForm As 受診者一覧
     Dim implementationHistoryForm As 事業所別実施履歴
     Dim resultReportForm As 健診結果報告書
@@ -134,19 +133,6 @@
         If IsNothing(resultFDForm) OrElse resultFDForm.IsDisposed Then
             resultFDForm = New 健診結果ＦＤ()
             resultFDForm.Show()
-        End If
-    End Sub
-
-    ''' <summary>
-    ''' FDリストボタンクリックイベント
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub btnFdList_Click(sender As System.Object, e As System.EventArgs) Handles btnFdList.Click
-        If IsNothing(fdListForm) OrElse fdListForm.IsDisposed Then
-            fdListForm = New ＦＤﾘｽﾄ()
-            fdListForm.Show()
         End If
     End Sub
 

@@ -25,7 +25,6 @@ Partial Class TopForm
         Me.btnOfficeMaster = New System.Windows.Forms.Button()
         Me.btnExamineeMaster = New System.Windows.Forms.Button()
         Me.btnResultFD = New System.Windows.Forms.Button()
-        Me.btnFdList = New System.Windows.Forms.Button()
         Me.btnExamineeList = New System.Windows.Forms.Button()
         Me.btnResultReport = New System.Windows.Forms.Button()
         Me.btnImplementationHistory = New System.Windows.Forms.Button()
@@ -62,16 +61,6 @@ Partial Class TopForm
         Me.btnResultFD.TabIndex = 2
         Me.btnResultFD.Text = "健診結果ＦＤ"
         Me.btnResultFD.UseVisualStyleBackColor = True
-        '
-        'btnFdList
-        '
-        Me.btnFdList.Font = New System.Drawing.Font("MS UI Gothic", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
-        Me.btnFdList.Location = New System.Drawing.Point(98, 359)
-        Me.btnFdList.Name = "btnFdList"
-        Me.btnFdList.Size = New System.Drawing.Size(258, 103)
-        Me.btnFdList.TabIndex = 3
-        Me.btnFdList.Text = "ＦＤﾘｽﾄ"
-        Me.btnFdList.UseVisualStyleBackColor = True
         '
         'btnExamineeList
         '
@@ -120,7 +109,6 @@ Partial Class TopForm
         Me.Controls.Add(Me.btnImplementationHistory)
         Me.Controls.Add(Me.btnResultReport)
         Me.Controls.Add(Me.btnExamineeList)
-        Me.Controls.Add(Me.btnFdList)
         Me.Controls.Add(Me.btnResultFD)
         Me.Controls.Add(Me.btnExamineeMaster)
         Me.Controls.Add(Me.btnOfficeMaster)
@@ -133,7 +121,6 @@ Partial Class TopForm
     Friend WithEvents btnOfficeMaster As System.Windows.Forms.Button
     Friend WithEvents btnExamineeMaster As System.Windows.Forms.Button
     Friend WithEvents btnResultFD As System.Windows.Forms.Button
-    Friend WithEvents btnFdList As System.Windows.Forms.Button
     Friend WithEvents btnExamineeList As System.Windows.Forms.Button
     Friend WithEvents btnResultReport As System.Windows.Forms.Button
     Friend WithEvents btnImplementationHistory As System.Windows.Forms.Button

@@ -430,13 +430,6 @@ Health3
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
-</member><member name="M:Health3.TopForm.btnFdList_Click(System.Object,System.EventArgs)">
-	<summary>
- FDリストボタンクリックイベント
- </summary>
-	<param name="sender"></param>
-	<param name="e"></param>
-	<remarks></remarks>
 </member><member name="M:Health3.TopForm.btnExamineeList_Click(System.Object,System.EventArgs)">
 	<summary>
  受診者一覧ボタンクリックイベント
@@ -532,6 +525,29 @@ Health3
  </summary>
 	<param name="sender"></param>
 	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果ＦＤ.createWriteDataText(System.Windows.Forms.DataGridViewRow)">
+	<summary>
+ 健診データを出力テキスト用に変換
+ </summary>
+	<param name="row">健診データ行</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果ＦＤ.convValue(System.String,System.Int32)">
+	<summary>
+ 検査値の変換
+ </summary>
+	<param name="val">検査値</param>
+	<param name="pattern">変換パターン(1 or 2 or 3 or 4 or 5)</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Health3.健診結果ＦＤ.paddingZenkakuText(System.String,System.Int32)">
+	<summary>
+ 全角文章の空白埋め
+ </summary>
+	<param name="txt">文章</param>
+	<param name="targetByte">必要な桁(Byte数)</param>
+	<returns></returns>
 	<remarks></remarks>
 </member><member name="T:Health3.事業所別実施履歴.dgvRowHeaderCell">
 	<summary>
