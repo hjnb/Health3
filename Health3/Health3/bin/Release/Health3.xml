@@ -231,6 +231,13 @@ Health3
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
+</member><member name="M:Health3.resultInputDataGridView.calcEGFR(System.String)">
+	<summary>
+ ｸﾚｱﾁﾆﾝ値からeGFRを算出
+ </summary>
+	<param name="inputCr">ｸﾚｱﾁﾆﾝ値</param>
+	<returns></returns>
+	<remarks></remarks>
 </member><member name="M:Health3.resultInputForm.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean)">
 	<summary>
  コンストラクタ

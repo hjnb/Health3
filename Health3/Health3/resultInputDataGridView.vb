@@ -3,6 +3,9 @@
 Public Class resultInputDataGridView
     Inherits DataGridView
 
+    Public eGFRBox As TextBox
+    Public ageBox As TextBox
+
     '性別
     Private _sex As String
     Public Property sex() As String
@@ -455,6 +458,9 @@ Public Class resultInputDataGridView
                     End If
                 End If
                 kubun = If(kubun <= kKubun, kKubun, kubun)
+
+                'ｸﾚｱﾁﾆﾝ値からeGFRを計算、セット
+                eGFRBox.Text = calcEGFR(kure)
             End If
             '指導区分
             Me("Kubun", 41).Value = If(kubun = 0, "", kubun)
@@ -800,4 +806,34 @@ Public Class resultInputDataGridView
             End If
         End If
     End Sub
+
+    ''' <summary>
+    ''' ｸﾚｱﾁﾆﾝ値からeGFRを算出
+    ''' </summary>
+    ''' <param name="inputCr">ｸﾚｱﾁﾆﾝ値</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function calcEGFR(inputCr As String) As String
+        If Not System.Text.RegularExpressions.Regex.IsMatch(inputCr, "^\d+(\.\d+)?$") Then
+            Return ""
+        End If
+
+        Dim age As String = ageBox.Text.Replace("歳", "").Replace(" ", "")
+        If Not System.Text.RegularExpressions.Regex.IsMatch(age, "^\d+$") Then
+            MsgBox("ｸﾚｱﾁﾆﾝ値からeGFRを算出できませんでした。" & Environment.NewLine & "年齢が設定されているか、正しくｸﾚｱﾁﾆﾝ値が入力されているか確認して下さい。", MsgBoxStyle.Exclamation)
+            Return ""
+        End If
+
+        Dim crDec As Decimal = CDec(inputCr)
+        Dim ageDec As Decimal = CDec(age)
+
+        'egfr = 194Cr^(-1.094)Age^(-0.287)
+        Dim egfr As Decimal = 194 * (Math.Pow(crDec, -1.094)) * (Math.Pow(ageDec, -0.287))
+        If sex = "2" Then
+            '女性は0.739倍
+            egfr = egfr * 0.739
+        End If
+
+        Return egfr.ToString("0.0")
+    End Function
 End Class

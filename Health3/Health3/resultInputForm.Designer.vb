@@ -40,6 +40,11 @@ Partial Class resultInputForm
         Me.syuBox = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.dgvInput = New Health3.resultInputDataGridView(Me.components)
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.eGFRBox = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
         CType(Me.dgvInput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -95,11 +100,12 @@ Partial Class resultInputForm
         Me.YmdBox.EraLabelText = "R01"
         Me.YmdBox.EraText = ""
         Me.YmdBox.Location = New System.Drawing.Point(108, 78)
-        Me.YmdBox.MonthLabelText = "05"
+        Me.YmdBox.MonthLabelText = "08"
         Me.YmdBox.MonthText = ""
         Me.YmdBox.Name = "YmdBox"
         Me.YmdBox.Size = New System.Drawing.Size(112, 30)
         Me.YmdBox.TabIndex = 44
+        Me.YmdBox.textReadOnly = False
         '
         'Label1
         '
@@ -210,14 +216,70 @@ Partial Class resultInputForm
         Me.dgvInput.Location = New System.Drawing.Point(35, 122)
         Me.dgvInput.Name = "dgvInput"
         Me.dgvInput.RowTemplate.Height = 21
+        Me.dgvInput.sex = Nothing
         Me.dgvInput.Size = New System.Drawing.Size(838, 579)
         Me.dgvInput.TabIndex = 54
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("MS UI Gothic", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+        Me.Label4.Location = New System.Drawing.Point(901, 301)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(50, 15)
+        Me.Label4.TabIndex = 55
+        Me.Label4.Text = "eGFR："
+        '
+        'eGFRBox
+        '
+        Me.eGFRBox.Font = New System.Drawing.Font("MS UI Gothic", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+        Me.eGFRBox.ImeMode = System.Windows.Forms.ImeMode.Disable
+        Me.eGFRBox.Location = New System.Drawing.Point(949, 298)
+        Me.eGFRBox.Name = "eGFRBox"
+        Me.eGFRBox.Size = New System.Drawing.Size(46, 22)
+        Me.eGFRBox.TabIndex = 56
+        Me.eGFRBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.ForeColor = System.Drawing.Color.Blue
+        Me.Label5.Location = New System.Drawing.Point(902, 248)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(45, 12)
+        Me.Label5.TabIndex = 57
+        Me.Label5.Text = "整数値 "
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.ForeColor = System.Drawing.Color.Blue
+        Me.Label6.Location = New System.Drawing.Point(902, 280)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(160, 12)
+        Me.Label6.TabIndex = 58
+        Me.Label6.Text = "小数第一位まで入力して下さい "
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.ForeColor = System.Drawing.Color.Blue
+        Me.Label7.Location = New System.Drawing.Point(914, 263)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(15, 12)
+        Me.Label7.TabIndex = 59
+        Me.Label7.Text = "or"
         '
         'resultInputForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(928, 709)
+        Me.ClientSize = New System.Drawing.Size(1065, 709)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.Label6)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.eGFRBox)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.dgvInput)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.syuBox)
@@ -259,4 +321,9 @@ Partial Class resultInputForm
     Friend WithEvents syuBox As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents dgvInput As Health3.resultInputDataGridView
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents eGFRBox As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Label7 As System.Windows.Forms.Label
 End Class
