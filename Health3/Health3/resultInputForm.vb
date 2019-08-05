@@ -1775,16 +1775,18 @@ Public Class resultInputForm
         End If
         '血清ｸﾚｱﾁﾆﾝ
         oSheet.Range("BY17").Value = Util.checkDBNullValue(rs.Fields("D180").Value)
-        '尿沈渣　赤血球
-        oSheet.Range("BT18").Value = Util.checkDBNullValue(rs.Fields("D174").Value)
-        '　　　　白血球
-        oSheet.Range("BY18").Value = Util.checkDBNullValue(rs.Fields("D175").Value)
-        '　　　　上皮細胞
-        oSheet.Range("CE18").Value = Util.checkDBNullValue(rs.Fields("D176").Value)
-        '　　　　円柱
-        oSheet.Range("BS19").Value = Util.checkDBNullValue(rs.Fields("D177").Value)
-        '　　　　その他
-        oSheet.Range("BY19").Value = Util.checkDBNullValue(rs.Fields("D178").Value)
+        '推算GFR
+        oSheet.Range("BY18").Value = Util.checkDBNullValue(rs.Fields("D313").Value)
+        ''尿沈渣　赤血球
+        'oSheet.Range("BT18").Value = Util.checkDBNullValue(rs.Fields("D174").Value)
+        ''　　　　白血球
+        'oSheet.Range("BY18").Value = Util.checkDBNullValue(rs.Fields("D175").Value)
+        ''　　　　上皮細胞
+        'oSheet.Range("CE18").Value = Util.checkDBNullValue(rs.Fields("D176").Value)
+        ''　　　　円柱
+        'oSheet.Range("BS19").Value = Util.checkDBNullValue(rs.Fields("D177").Value)
+        ''　　　　その他
+        'oSheet.Range("BY19").Value = Util.checkDBNullValue(rs.Fields("D178").Value)
 
         '血液一般
         '指導区分
