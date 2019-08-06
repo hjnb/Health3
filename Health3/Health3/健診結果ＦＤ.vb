@@ -1372,6 +1372,30 @@ Public Class 健診結果ＦＤ
         '予備21(13)
         sb.Append(Space(13))
 
+        '新しいフォーマット対応用↓
+        '脂質は空白で埋める((1+8)*2で18)
+        sb.Append(Space(18))
+        '尿一般・腎機能
+        '血清クレアチニン(1)(8)　空白で埋める
+        sb.Append(Space(9))
+        '対象者(1)　空白で埋める
+        sb.Append(Space(1))
+        '実施理由(40)　空白で埋める
+        sb.Append(Space(40))
+        'eGFR(1)(8)
+        Dim d313 As String = Util.checkDBNullValue(row.Cells("D313").Value)
+        sb.Append(If(d313 = "", "0", "1"))
+        sb.Append(convValue(d313, 3))
+        '心電図(1)　空白で埋める
+        sb.Append(Space(1))
+        '子宮(2)　空白で埋める
+        sb.Append(Space(2))
+        '眼底((1+8)*2+1で19)　空白で埋める
+        sb.Append(Space(19))
+        '質問票(1)(1)　空白で埋める
+        sb.Append(Space(2))
+        '伝達事項(1)(1)(1)　空白で埋める
+        sb.Append(Space(3))
 
         Return sb.ToString()
     End Function
