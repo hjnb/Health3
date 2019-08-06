@@ -18,7 +18,7 @@ Public Class resultInputDataGridView
     End Property
 
     '文字数制限用
-    Private Const LIMIT_LENGTH_BYTE As Integer = 60
+    Private limitLengthByte As Integer
 
     '標準体重算出用BMI
     Private Const STANDARD_BMI As Double = 22
@@ -779,8 +779,49 @@ Public Class resultInputDataGridView
             'イベントハンドラを削除
             RemoveHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
 
-            If 94 <= selectedRowIndex AndAlso selectedRowIndex <= 99 Then
-                '総合判定入力テキストボックス用
+            If 6 <= selectedRowIndex AndAlso selectedRowIndex <= 7 Then
+                '既往歴、自覚症状テキスト用(全角20文字)
+                limitLengthByte = 40
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf selectedRowIndex = 8 Then
+                '胸部・腹部所見(全角8文字)
+                limitLengthByte = 16
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf selectedRowIndex = 63 Then
+                '心電図所見(全角14文字)
+                limitLengthByte = 28
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf selectedRowIndex = 64 Then
+                '心電図所見(全角20文字)
+                limitLengthByte = 40
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf selectedRowIndex = 66 Then
+                '胸部X線所見(全角18文字)
+                limitLengthByte = 36
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf selectedRowIndex = 77 Then
+                '胃部X線所見(全角18文字)
+                limitLengthByte = 36
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf selectedRowIndex = 78 Then
+                '胃部内視鏡所見(全角8文字)
+                limitLengthByte = 16
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf 94 <= selectedRowIndex AndAlso selectedRowIndex <= 99 Then
+                '総合判定入力テキスト用(全角30文字)
+                limitLengthByte = 60
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf 102 <= selectedRowIndex AndAlso selectedRowIndex <= 103 Then
+                '服薬1薬剤名、服薬理由(全角20文字)
+                limitLengthByte = 40
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf 105 <= selectedRowIndex AndAlso selectedRowIndex <= 106 Then
+                '服薬2薬剤名、服薬理由(全角20文字)
+                limitLengthByte = 40
+                AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
+            ElseIf 108 <= selectedRowIndex AndAlso selectedRowIndex <= 109 Then
+                '服薬3薬剤名、服薬理由(全角20文字)
+                limitLengthByte = 40
                 AddHandler tb.KeyPress, AddressOf dgvTextBox_KeyPress
             End If
         End If
@@ -796,7 +837,7 @@ Public Class resultInputDataGridView
         Dim text As String = CType(sender, DataGridViewTextBoxEditingControl).Text
         Dim lengthByte As Integer = Encoding.GetEncoding("Shift_JIS").GetByteCount(text)
 
-        If lengthByte >= LIMIT_LENGTH_BYTE Then '設定されているバイト数以上の時
+        If lengthByte >= limitLengthByte Then '設定されているバイト数以上の時
             If e.KeyChar = ChrW(Keys.Back) Then
                 'Backspaceは入力可能
                 e.Handled = False
