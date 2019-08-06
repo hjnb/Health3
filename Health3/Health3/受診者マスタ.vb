@@ -181,7 +181,7 @@ Public Class 受診者マスタ
         Dim cnn As New ADODB.Connection
         cnn.Open(TopForm.DB_Health3)
         Dim rs As New ADODB.Recordset
-        Dim sql As String = "select U.Bango, U.Nam, U.Kana, U.Sex, U.Birth, Int((Format(NOW(),'YYYYMMDD')-Format(U.Birth, 'YYYYMMDD'))/10000) as Age, U.Kubun, K.LastDate, U.Tel, U.Post, U.Jyu, U.Text from (select * from UsrM where Ind = '" & ind & "') as U left join (select Kana, Max(Ymd) as LastDate from KenD group by Kana) as K on U.Kana = K.Kana order by U.Kana"
+        Dim sql As String = "select U.Bango, U.Nam, U.Kana, U.Sex, U.Birth, Int((Format(NOW(),'YYYYMMDD')-Format(U.Birth, 'YYYYMMDD'))/10000) as Age, U.Kubun, K.LastDate, U.Tel, U.Post, U.Jyu, U.Text from (select * from UsrM where Ind = '" & ind & "') as U left join (select Kana, Max(Ymd) as LastDate from KenD where Ind = '" & ind & "' group by Kana) as K on U.Kana = K.Kana order by U.Kana"
         rs.Open(sql, cnn, ADODB.CursorTypeEnum.adOpenForwardOnly, ADODB.LockTypeEnum.adLockReadOnly)
         Dim da As OleDbDataAdapter = New OleDbDataAdapter()
         Dim ds As DataSet = New DataSet()
