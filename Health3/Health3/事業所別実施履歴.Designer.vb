@@ -187,7 +187,7 @@ Partial Class 事業所別実施履歴
         Me.indLabel.AutoSize = True
         Me.indLabel.Font = New System.Drawing.Font("MS UI Gothic", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
         Me.indLabel.ForeColor = System.Drawing.Color.Blue
-        Me.indLabel.Location = New System.Drawing.Point(251, 21)
+        Me.indLabel.Location = New System.Drawing.Point(180, 21)
         Me.indLabel.Name = "indLabel"
         Me.indLabel.Size = New System.Drawing.Size(0, 15)
         Me.indLabel.TabIndex = 15

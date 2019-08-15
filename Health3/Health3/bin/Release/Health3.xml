@@ -578,6 +578,13 @@ Health3
  データグリッドビュー初期設定
  </summary>
 	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.latest7DateSet(System.String,System.Data.DataTable)">
+	<summary>
+ 直近7回分の健診日を表示
+ </summary>
+	<param name="ind">事業所名</param>
+	<param name="dt">表示用データテーブル</param>
+	<remarks></remarks>
 </member><member name="M:Health3.事業所別実施履歴.displayDgvList(System.String)">
 	<summary>
  対象事業所のリスト表示
@@ -648,6 +655,13 @@ Health3
  角形2号印刷
  </summary>
 	<param name="namList"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.btnPersonal_Click(System.Object,System.EventArgs)">
+	<summary>
+ 個人票ボタンクリックイベント
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
 	<remarks></remarks>
 </member><member name="T:Health3.事業所マスタ.dgvRowHeaderCell">
 	<summary>

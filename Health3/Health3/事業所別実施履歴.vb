@@ -109,6 +109,37 @@ Public Class 事業所別実施履歴
     End Sub
 
     ''' <summary>
+    ''' 直近7回分の健診日を表示
+    ''' </summary>
+    ''' <param name="ind">事業所名</param>
+    ''' <param name="dt">表示用データテーブル</param>
+    ''' <remarks></remarks>
+    Private Sub latest7DateSet(ind As String, dt As DataTable)
+        'データ取得
+        Dim cnn As New ADODB.Connection
+        cnn.Open(TopForm.DB_Health3)
+        Dim rs As New ADODB.Recordset
+        Dim sql As String = "select U.Nam, U.Kana, K.Ymd from UsrM as U inner join (select Ind, Kana, Ymd from KenD where Ind = '" & ind & "') as K on U.Kana = K.Kana and U.Ind = K.Ind order by U.Kana, Ymd Desc"
+        rs.Open(sql, cnn, ADODB.CursorTypeEnum.adOpenKeyset, ADODB.LockTypeEnum.adLockReadOnly)
+        For Each row As DataRow In dt.Rows
+            Dim nam As String = row("Nam")
+            rs.Filter = "Nam = '" & nam & "'"
+            Dim rCount As Integer = 0
+            While Not rs.EOF
+                If rCount = 7 Then
+                    row("Continued") = "・・・"
+                    Exit While
+                End If
+
+                Dim ymd As String = Util.checkDBNullValue(rs.Fields("Ymd").Value)
+                row("J" & (rCount + 1)) = ymd
+                rCount += 1
+                rs.MoveNext()
+            End While
+        Next
+    End Sub
+
+    ''' <summary>
     ''' 対象事業所のリスト表示
     ''' </summary>
     ''' <param name="ind">事業所名</param>
@@ -141,6 +172,9 @@ Public Class 事業所別実施履歴
         For Each row As DataRow In dt.Rows
             row("Check") = False
         Next
+
+        '直近5回分健診日表示
+        latest7DateSet(ind, dt)
 
         '表示
         dgvList.DataSource = dt
@@ -585,5 +619,15 @@ Public Class 事業所別実施履歴
         oSheet = Nothing
         objWorkBook = Nothing
         objExcel = Nothing
+    End Sub
+
+    ''' <summary>
+    ''' 個人票ボタンクリックイベント
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnPersonal_Click(sender As System.Object, e As System.EventArgs) Handles btnPersonal.Click
+
     End Sub
 End Class
