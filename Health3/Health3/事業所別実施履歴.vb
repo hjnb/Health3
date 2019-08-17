@@ -4,6 +4,38 @@ Imports System.Runtime.InteropServices
 
 Public Class 事業所別実施履歴
 
+    '個人票印刷の基準値範囲外の記号
+    Private HASHMARK As String = " #"
+
+    '蛋白、糖、潜血用
+    Private numberDic1 As New Dictionary(Of String, String) From {{"1", "(－)"}, {"2", "(±)"}, {"3", "(＋)"}, {"4", "(2＋)"}, {"5", "(3＋)"}}
+
+    'ｳﾛﾋﾞﾘﾉｰｹﾞﾝ用
+    Private numberDic2 As New Dictionary(Of String, String) From {{"2", "(±)"}, {"3", "(＋)"}, {"4", "(2＋)"}, {"5", "(3＋)"}}
+
+    '男女で基準値が異なる項目名
+    Private stdValName() As String = {"Ｆｅ", "ＨＤＬ－ｺﾚｽﾃﾛｰﾙ", "γ－ＧＴＰ", "ｸﾚｱﾁﾆﾝ", "血清ｸﾚｱﾁﾆﾝ", "赤沈", "赤血球数", "血色素量", "ﾍﾏﾄｸﾘｯﾄ", "ﾍﾓｸﾞﾛﾋﾞﾝ"}
+
+    ''' <summary>
+    ''' 個人票印刷用データクラス
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Class PrintData
+        Public ind As String
+        Public nam As String
+        Public birth As String
+        Public sex As String
+        Public kenData(,) As String
+
+        Public Sub New(ind As String, nam As String, birth As String, sex As String, kenData(,) As String)
+            Me.ind = ind
+            Me.nam = nam
+            Me.birth = birth
+            Me.sex = sex
+            Me.kenData = kenData
+        End Sub
+    End Class
+
     ''' <summary>
     ''' 行ヘッダーのカレントセルを表す三角マークを非表示に設定する為のクラス。
     ''' </summary>
@@ -628,6 +660,375 @@ Public Class 事業所別実施履歴
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub btnPersonal_Click(sender As System.Object, e As System.EventArgs) Handles btnPersonal.Click
+        Dim printDataList As New List(Of PrintData)
+        For Each row As DataGridViewRow In dgvList.Rows
+            Dim checked As Boolean = row.Cells("Check").Value
+            If checked Then
+                '事業所名
+                Dim ind As String = indLabel.Text
+                '氏名
+                Dim nam As String = Util.checkDBNullValue(row.Cells("Nam").Value)
+                '生年月日
+                Dim birth As String = Util.checkDBNullValue(row.Cells("Birth").Value)
+                '性別、カナ取得
+                Dim sex As String = ""
+                Dim kana As String = ""
+                setSexAndKana(ind, nam, birth, sex, kana)
+                '健診実施日
+                Dim dateArray(3) As String
+                For i As Integer = 1 To 4
+                    dateArray(i - 1) = Util.checkDBNullValue(row.Cells("J" & i).Value)
+                Next
+                '検診データ
+                Dim kenData(,) As String = createKenData(ind, nam, birth, sex, kana, dateArray)
 
+                'リストに追加
+                printDataList.Add(New PrintData(ind, nam, birth, sex, kenData))
+            End If
+        Next
+        'チェックが無い場合
+        If printDataList.Count = 0 Then
+            MsgBox("個人票印刷対象者にチェックを入れて下さい。", MsgBoxStyle.Exclamation)
+            Return
+        End If
+
+        'エクセル
+        Dim objExcel As Excel.Application = CreateObject("Excel.Application")
+        Dim objWorkBooks As Excel.Workbooks = objExcel.Workbooks
+        Dim objWorkBook As Excel.Workbook = objWorkBooks.Open(TopForm.excelFilePass)
+        Dim oSheet As Excel.Worksheet = objWorkBook.Worksheets("個人票改")
+        objExcel.Calculation = Excel.XlCalculation.xlCalculationManual
+        objExcel.ScreenUpdating = False
+
+        '事業所名
+        oSheet.Range("I2").Value = indLabel.Text
+
+        '必要枚数コピペ
+        Dim pageRowCount As Integer = 70
+        For i As Integer = 0 To printDataList.Count - 2
+            Dim xlPasteRange As Excel.Range = oSheet.Range("A" & (pageRowCount + 1 + (pageRowCount * i))) 'ペースト先
+            oSheet.Rows("1:" & pageRowCount).copy(xlPasteRange)
+            oSheet.HPageBreaks.Add(oSheet.Range("A" & (pageRowCount + 1 + (pageRowCount * i)))) '改ページ
+        Next
+
+        'データ貼り付け
+        For i As Integer = 0 To printDataList.Count - 1
+            '氏名
+            oSheet.Range("C" & (5 + pageRowCount * i)).Value = printDataList(i).nam
+            '生年月日
+            oSheet.Range("F" & (5 + pageRowCount * i)).Value = printDataList(i).birth
+            '性別
+            oSheet.Range("F" & (6 + pageRowCount * i)).Value = If(printDataList(i).sex = "1", "男", "女")
+            '検診データ
+            oSheet.Range("D" & (7 + pageRowCount * i), "K" & (65 + pageRowCount * i)).Value = printDataList(i).kenData
+        Next
+
+        objExcel.Calculation = Excel.XlCalculation.xlCalculationAutomatic
+        objExcel.ScreenUpdating = True
+
+        '変更保存確認ダイアログ非表示
+        objExcel.DisplayAlerts = False
+
+        '印刷
+        If rbtnPrint.Checked = True Then
+            oSheet.PrintOut()
+        ElseIf rbtnPreview.Checked = True Then
+            objExcel.Visible = True
+            oSheet.PrintPreview(1)
+        End If
+
+        ' EXCEL解放
+        objExcel.Quit()
+        Marshal.ReleaseComObject(objWorkBook)
+        Marshal.ReleaseComObject(objExcel)
+        oSheet = Nothing
+        objWorkBook = Nothing
+        objExcel = Nothing
     End Sub
+
+    ''' <summary>
+    ''' 性別とカナを取得
+    ''' </summary>
+    ''' <param name="ind">事業所名</param>
+    ''' <param name="nam">漢字氏名</param>
+    ''' <param name="birth">生年月日(和暦)</param>
+    ''' <param name="sex">性別用変数</param>
+    ''' <param name="kana">カナ用変数</param>
+    ''' <remarks></remarks>
+    Private Sub setSexAndKana(ind As String, nam As String, birth As String, ByRef sex As String, ByRef kana As String)
+        Dim cnn As New ADODB.Connection
+        cnn.Open(TopForm.DB_Health3)
+        Dim rs As New ADODB.Recordset
+        Dim sql As String = "select Kana, Sex from UsrM where Ind = '" & ind & "' and Nam = '" & nam & "' and Birth = '" & birth & "'"
+        rs.Open(sql, cnn, ADODB.CursorTypeEnum.adOpenForwardOnly, ADODB.LockTypeEnum.adLockReadOnly)
+        sex = rs.Fields("Sex").Value
+        kana = rs.Fields("Kana").Value
+        rs.Close()
+        cnn.Close()
+    End Sub
+
+    ''' <summary>
+    ''' 個人票印刷用の検診結果直近４回分データ作成
+    ''' </summary>
+    ''' <param name="ind">事業所名</param>
+    ''' <param name="nam">漢字氏名</param>
+    ''' <param name="birth">生年月日</param>
+    ''' <param name="sex">性別</param>
+    ''' <param name="kana">カナ</param>
+    ''' <param name="dateArray">健診実施日（４回分）</param>
+    ''' <returns>検診データ</returns>
+    ''' <remarks></remarks>
+    Private Function createKenData(ind As String, nam As String, birth As String, sex As String, kana As String, dateArray() As String) As String(,)
+        '基準値データ取得
+        Dim cn As New ADODB.Connection()
+        cn.Open(topForm.DB_Diagnose)
+        Dim baseValDt As DataTable
+        Dim rsBase As New ADODB.Recordset
+        Dim sql As String = "select Nam, Low1, Upp1, Low2, Upp2 from StdM"
+        rsBase.Open(sql, cn, ADODB.CursorTypeEnum.adOpenForwardOnly, ADODB.LockTypeEnum.adLockReadOnly)
+        Dim da As OleDbDataAdapter = New OleDbDataAdapter()
+        Dim ds As DataSet = New DataSet()
+        da.Fill(ds, rsBase, "StdM")
+        baseValDt = ds.Tables("StdM")
+
+        '結果データ作成
+        Dim cnHealth As New ADODB.Connection()
+        cnHealth.Open(TopForm.DB_Health3)
+        Dim result(58, 7) As String
+        Dim count As Integer = 1
+        For i As Integer = 0 To 3
+            If dateArray(i) = "" Then
+                Exit For
+            Else
+                Dim ymd As String = dateArray(i) '検診実施日
+
+                'データ取得
+                sql = "select * from KenD where Ind = '" & ind & "' and Kana = '" & kana & "' and D6 = '" & birth & "' and Ymd = '" & ymd & "'"
+                Dim rs As New ADODB.Recordset
+                rs.Open(sql, cnHealth, ADODB.CursorTypeEnum.adOpenKeyset, ADODB.LockTypeEnum.adLockOptimistic)
+
+                '検診年月日
+                result(0, i * 2) = ymd
+                '年齢
+                result(1, i * 2) = Util.calcAge(Util.convWarekiStrToADStr(birth), ymd)
+                '職種 とりあえず空白
+                result(2, i * 2) = ""
+                '既往歴・自覚症状
+                Dim d33 As String = Util.checkDBNullValue(rs.Fields("D33").Value)
+                Dim d35 As String = Util.checkDBNullValue(rs.Fields("D35").Value)
+                If d33 <> "" AndAlso d35 <> "" Then
+                    result(3, i * 2) = d33 & Environment.NewLine & d35
+                ElseIf d33 = "" Then
+                    result(3, i * 2) = d35
+                ElseIf d35 = "" Then
+                    result(3, i * 2) = d33
+                End If
+                '他覚症状
+                result(6, i * 2) = ""
+                '内科診察
+                result(7, i * 2) = Util.checkDBNullValue(rs.Fields("D38").Value)
+                '身長
+                Dim height As Decimal = 0
+                Dim heightStr As String = Util.checkDBNullValue(rs.Fields("D17").Value)
+                If System.Text.RegularExpressions.Regex.IsMatch(heightStr, "^\d+(\.\d+)?$") Then
+                    height = CDec(heightStr)
+                End If
+                result(8, i * 2) = heightStr
+                '体重
+                Dim weight As Decimal = 0
+                Dim weightStr As String = Util.checkDBNullValue(rs.Fields("D19").Value)
+                If System.Text.RegularExpressions.Regex.IsMatch(weightStr, "^\d+(\.\d+)?$") Then
+                    weight = CDec(weightStr)
+                End If
+                result(9, i * 2) = weightStr
+                'ＢＭＩ
+                If height <> 0 AndAlso weight <> 0 Then
+                    Dim bmi As Decimal = Math.Round(weight / ((height / 100) * (height / 100)), 1, MidpointRounding.AwayFromZero)
+                    result(10, i * 2) = bmi
+                Else
+                    result(10, i * 2) = ""
+                End If
+                '腹囲
+                result(11, i * 2) = Util.checkDBNullValue(rs.Fields("D25").Value)
+                '血圧最高
+                Dim d54 As String = Util.checkDBNullValue(rs.Fields("D54").Value)
+                Dim d56 As String = Util.checkDBNullValue(rs.Fields("D56").Value)
+                Dim ketuH As String = If(d56 <> "", d56, d54)
+                result(12, i * 2) = checkBaseValue(ketuH, "最高血圧", baseValDt, sex)
+                '　　最低
+                Dim d60 As String = Util.checkDBNullValue(rs.Fields("D60").Value)
+                Dim d62 As String = Util.checkDBNullValue(rs.Fields("D62").Value)
+                Dim ketuL As String = If(d62 <> "", d62, d60)
+                result(13, i * 2) = checkBaseValue(ketuL, "最低血圧", baseValDt, sex)
+                '視力　右
+                result(14, i * 2) = Util.checkDBNullValue(rs.Fields("D40").Value) & " ( " & Util.checkDBNullValue(rs.Fields("D42").Value) & " )"
+                '　　　左
+                result(15, i * 2) = Util.checkDBNullValue(rs.Fields("D44").Value) & " ( " & Util.checkDBNullValue(rs.Fields("D46").Value) & " )"
+                '聴力　右　1000Hz
+                Dim d47 As String = Util.checkDBNullValue(rs.Fields("D47").Value)
+                result(16, i * 2) = If(d47 = "1", "所見ﾅｼ", If(d47 = "2", "所見ｱﾘ", ""))
+                '　　　　　4000Hz
+                Dim d48 As String = Util.checkDBNullValue(rs.Fields("D48").Value)
+                result(17, i * 2) = If(d48 = "1", "所見ﾅｼ", If(d48 = "2", "所見ｱﾘ", ""))
+                '　　　左　1000Hz
+                Dim d49 As String = Util.checkDBNullValue(rs.Fields("D49").Value)
+                result(18, i * 2) = If(d49 = "1", "所見ﾅｼ", If(d49 = "2", "所見ｱﾘ", ""))
+                '　　　　　4000Hz
+                Dim d50 As String = Util.checkDBNullValue(rs.Fields("D50").Value)
+                result(19, i * 2) = If(d50 = "1", "所見ﾅｼ", If(d50 = "2", "所見ｱﾘ", ""))
+                '検査方法
+                If d47 <> "" OrElse d48 <> "" OrElse d49 <> "" OrElse d50 <> "" Then
+                    result(20, i * 2) = "ｵｰｼﾞｵ"
+                End If
+                '胸部Ｘ線　直接・間接
+                Dim d237 As String = Util.checkDBNullValue(rs.Fields("D237").Value)
+                Dim d238 As String = Util.checkDBNullValue(rs.Fields("D238").Value)
+                If d237 = "1" Then
+                    result(21, i * 2) = "直接"
+                    '　　　　　撮影年月日
+                    result(22, i * 2) = ymd
+                    '　　　　　フィルムNo
+                    result(23, i * 2) = ""
+                    '　　　　　診断
+                    result(24, i * 2) = d238
+                ElseIf d237 = "2" Then
+                    result(21, i * 2) = "間接"
+                    '　　　　　撮影年月日
+                    result(22, i * 2) = ymd
+                    '　　　　　フィルムNo
+                    result(23, i * 2) = ""
+                    '　　　　　診断
+                    result(24, i * 2) = d238
+                End If
+                '胃部　Ｘ線
+                Dim d242 As String = Util.checkDBNullValue(rs.Fields("D242").Value)
+                result(25, i * 2) = d242
+                '　　　カメラ
+                result(26, i * 2) = ""
+                '心電図
+                result(27, i * 2) = Util.checkDBNullValue(rs.Fields("D213").Value)
+                '尿　糖
+                Dim d161 As String = Util.checkDBNullValue(rs.Fields("D161").Value)
+                If numberDic1.ContainsKey(d161) Then
+                    result(28, i * 2) = numberDic1(d161)
+                End If
+                '　　蛋白
+                Dim d171 As String = Util.checkDBNullValue(rs.Fields("D171").Value)
+                If numberDic1.ContainsKey(d171) Then
+                    result(29, i * 2) = numberDic1(d171)
+                End If
+                '　　ｳﾛﾋﾞﾘﾉｰｹﾞﾝ
+                result(30, i * 2) = ""
+                '　　潜血
+                Dim d173 As String = Util.checkDBNullValue(rs.Fields("D173").Value)
+                If numberDic1.ContainsKey(d173) Then
+                    result(31, i * 2) = numberDic1(d173)
+                End If
+                '貧血　白血球数
+                result(32, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D190").Value).Replace(".", ""), "白血球数", baseValDt, sex)
+                '　　　赤血球数
+                result(33, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D188").Value), "赤血球数", baseValDt, sex)
+                '　　　血色素量
+                result(34, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D186").Value), "血色素量", baseValDt, sex)
+                '　　　ﾍﾏﾄｸﾘｯﾄ
+                result(35, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D184").Value), "ﾍﾏﾄｸﾘｯﾄ", baseValDt, sex)
+                '　　　血小板数
+                result(36, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D192").Value), "血小板数", baseValDt, sex)
+                '肝機能　ＧＯＴ
+                result(37, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D91").Value), "ＧＯＴ", baseValDt, sex)
+                '　　　　ＧＰＴ
+                result(38, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D95").Value), "ＧＰＴ", baseValDt, sex)
+                '　　　　γーＧＴＰ
+                result(39, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D101").Value), "γ－ＧＴＰ", baseValDt, sex)
+                '　　　　ＡＬＰ
+                result(40, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D103").Value), "ＡＬＰ", baseValDt, sex)
+                '血中脂質　総コレステロール
+                result(41, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D69").Value), "総ｺﾚｽﾃﾛｰﾙ", baseValDt, sex)
+                '　　　　　中性脂肪
+                result(42, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D75").Value), "中性脂肪", baseValDt, sex)
+                '　　　　　ＨＤＬコレステロール
+                result(43, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D81").Value), "ＨＤＬ－ｺﾚｽﾃﾛｰﾙ", baseValDt, sex)
+                '　　　　　ＬＤＬコレステロール
+                result(44, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D87").Value), "ＬＤＬ－ｺﾚｽﾃﾛｰﾙ", baseValDt, sex)
+                '糖尿　血糖（空腹時）
+                result(45, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D129").Value), "血糖", baseValDt, sex)
+                '　　　HbA1c
+                result(46, i * 2) = ""
+                ''腎機能　尿酸
+                result(47, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D165").Value), "尿酸", baseValDt, sex)
+                '　　　　ｸﾚｱﾁﾆﾝ
+                result(48, i * 2) = checkBaseValue(Util.checkDBNullValue(rs.Fields("D180").Value), "ｸﾚｱﾁﾆﾝ", baseValDt, sex)
+                '肝炎　ＨＢｓ抗原
+                Dim d72 As String = Util.checkDBNullValue(rs.Fields("D267").Value)
+                If d72 = "1" Then
+                    result(49, i * 2) = "(－)"
+                ElseIf d72 = "2" Then
+                    result(49, i * 2) = "(±)"
+                ElseIf d72 = "3" Then
+                    result(49, i * 2) = "(＋)"
+                End If
+                '　　　ＨＣＶ抗体
+                Dim d73 As String = Util.checkDBNullValue(rs.Fields("D269").Value)
+                If d73 = "1" Then
+                    result(50, i * 2) = "感染なし"
+                ElseIf d73 = "2" Then
+                    result(50, i * 2) = "感染あり"
+                ElseIf d73 = "3" Then
+                    result(50, i * 2) = "要検査"
+                End If
+                '便潜血　１日目
+                Dim d69 As String = Util.checkDBNullValue(rs.Fields("D251").Value)
+                result(51, i * 2) = If(d69 = "1", "－", If(d69 = "2", "＋", ""))
+                '　　　　２日目
+                Dim d70 As String = Util.checkDBNullValue(rs.Fields("D253").Value)
+                result(52, i * 2) = If(d70 = "1", "－", If(d70 = "2", "＋", ""))
+                '医師の指示注意
+                Dim d279a As String = Util.checkDBNullValue(rs.Fields("D279a").Value)
+                Dim d279b As String = Util.checkDBNullValue(rs.Fields("D279b").Value)
+                Dim d279c As String = Util.checkDBNullValue(rs.Fields("D279c").Value)
+                Dim d279d As String = Util.checkDBNullValue(rs.Fields("D279d").Value)
+                Dim d279e As String = Util.checkDBNullValue(rs.Fields("D279e").Value)
+                Dim d279f As String = Util.checkDBNullValue(rs.Fields("D279f").Value)
+                result(53, i * 2) = d279a & d279b & d279c & d279d & d279e & d279f
+
+                rs.Close()
+            End If
+        Next
+
+        Return result
+    End Function
+
+    ''' <summary>
+    ''' 検査値が基準値範囲外かチェック
+    ''' </summary>
+    ''' <param name="resultValue">検査結果値</param>
+    ''' <param name="itemName">検査項目名</param>
+    ''' <param name="baseDt">基準値データテーブル</param>
+    ''' <param name="sex">性別</param>
+    ''' <returns>範囲外の場合は#記号を付けて返す</returns>
+    ''' <remarks></remarks>
+    Private Function checkBaseValue(resultValue As String, itemName As String, baseDt As DataTable, sex As String) As String
+        If Not System.Text.RegularExpressions.Regex.IsMatch(resultValue, "^\d+(\.\d+)?$") Then
+            Return resultValue
+        Else
+            '基準値の取得
+            Dim low As Decimal
+            Dim upp As Decimal
+            If sex = "2" AndAlso Array.IndexOf(stdValName, itemName) >= 0 Then
+                '女性用の基準値
+                low = baseDt.Select("Nam = '" & itemName & "'")(0).Item("Low2")
+                upp = baseDt.Select("Nam = '" & itemName & "'")(0).Item("Upp2")
+            Else
+                low = baseDt.Select("Nam = '" & itemName & "'")(0).Item("Low1")
+                upp = baseDt.Select("Nam = '" & itemName & "'")(0).Item("Upp1")
+            End If
+
+            '基準値範囲外の場合は"#"記号を付ける
+            If Not (low <= resultValue AndAlso resultValue <= upp) Then
+                Return resultValue & HASHMARK
+            Else
+                Return resultValue
+            End If
+        End If
+    End Function
 End Class

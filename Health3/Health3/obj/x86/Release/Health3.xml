@@ -556,6 +556,11 @@ Health3
 	<param name="targetByte">必要な桁(Byte数)</param>
 	<returns></returns>
 	<remarks></remarks>
+</member><member name="T:Health3.事業所別実施履歴.PrintData">
+	<summary>
+ 個人票印刷用データクラス
+ </summary>
+	<remarks></remarks>
 </member><member name="T:Health3.事業所別実施履歴.dgvRowHeaderCell">
 	<summary>
  行ヘッダーのカレントセルを表す三角マークを非表示に設定する為のクラス。
@@ -662,6 +667,38 @@ Health3
  </summary>
 	<param name="sender"></param>
 	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.setSexAndKana(System.String,System.String,System.String,System.String@,System.String@)">
+	<summary>
+ 性別とカナを取得
+ </summary>
+	<param name="ind">事業所名</param>
+	<param name="nam">漢字氏名</param>
+	<param name="birth">生年月日(和暦)</param>
+	<param name="sex">性別用変数</param>
+	<param name="kana">カナ用変数</param>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.createKenData(System.String,System.String,System.String,System.String,System.String,System.String[])">
+	<summary>
+ 個人票印刷用の検診結果直近４回分データ作成
+ </summary>
+	<param name="ind">事業所名</param>
+	<param name="nam">漢字氏名</param>
+	<param name="birth">生年月日</param>
+	<param name="sex">性別</param>
+	<param name="kana">カナ</param>
+	<param name="dateArray">健診実施日（４回分）</param>
+	<returns>検診データ</returns>
+	<remarks></remarks>
+</member><member name="M:Health3.事業所別実施履歴.checkBaseValue(System.String,System.String,System.Data.DataTable,System.String)">
+	<summary>
+ 検査値が基準値範囲外かチェック
+ </summary>
+	<param name="resultValue">検査結果値</param>
+	<param name="itemName">検査項目名</param>
+	<param name="baseDt">基準値データテーブル</param>
+	<param name="sex">性別</param>
+	<returns>範囲外の場合は#記号を付けて返す</returns>
 	<remarks></remarks>
 </member><member name="T:Health3.事業所マスタ.dgvRowHeaderCell">
 	<summary>
