@@ -877,4 +877,8 @@ Public Class resultInputDataGridView
 
         Return egfr.ToString("0.0")
     End Function
+
+    Private Sub resultInputDataGridView_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseWheel
+        Me.CurrentCell = Me(0, 0)
+    End Sub
 End Class
