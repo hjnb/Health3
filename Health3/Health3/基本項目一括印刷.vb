@@ -5,10 +5,10 @@ Imports System.Runtime.InteropServices
 Public Class 基本項目一括印刷
 
     '健診項目○印用
-    Private circleTypeArray() As String = {"メデック"}
+    Private circleTypeArray() As String = {"生活（Ba有り、便有り）", "生活（Ba有り、便無し）", "生活（Ba無し、便有り）", "生活（Ba無し、便無し）"}
 
     '採血種類
-    Private bloodTypeArray() As String = {"生活習慣病予防健診"}
+    Private bloodTypeArray() As String = {"生活", "生活＋HbA1c", "生活＋肝炎", "生活＋ＡＢＣ", "生活＋肝炎＋ＡＢＣ"}
 
     'その他の検査項目用文字列
     Private itemArray() As String = {"腰椎ＸＰ：", "ＡＢＣ：", "ピロリ："}
@@ -54,6 +54,9 @@ Public Class 基本項目一括印刷
 
         'コンボボックス初期設定
         initComboBox()
+
+        '採血種類の初期値として生活を選択
+        bloodTypeBox.SelectedIndex = 0
     End Sub
 
     ''' <summary>
@@ -210,7 +213,6 @@ Public Class 基本項目一括印刷
     ''' <remarks></remarks>
     Private Sub btnPrint_Click(sender As System.Object, e As System.EventArgs) Handles btnPrint.Click
         '対象者のデータ取得
-        Dim bloodType As String = bloodTypeBox.Text
         Dim dataList As New List(Of String(,))
         Dim dataArray(4, 7) As String
         For Each row As DataGridViewRow In dgvNamList.Rows
@@ -258,6 +260,101 @@ Public Class 基本項目一括印刷
         'その他の検査項目3
         oSheet.Range("R12").Value = cb3.Text
 
+        '検診項目の○印
+        Dim cell As Excel.Range
+        If circleTypeBox.Text <> "" Then
+            '診察等
+            cell = DirectCast(oSheet.Cells(14, "A"), Excel.Range)
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left + 5, cell.Top, 17, 17).Fill.Transparency = 1
+            '血圧
+            cell = DirectCast(oSheet.Cells(19, "A"), Excel.Range)
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left + 5, cell.Top + 5, 17, 17).Fill.Transparency = 1
+            '既往歴・自覚症状
+            cell = DirectCast(oSheet.Cells(9, "Q"), Excel.Range)
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 75, 17).Fill.Transparency = 1
+            '採血時間
+            cell = DirectCast(oSheet.Cells(13, "Q"), Excel.Range)
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 40, 17).Fill.Transparency = 1
+            '胸部X線
+            cell = DirectCast(oSheet.Cells(26, "Q"), Excel.Range)
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 17, 17).Fill.Transparency = 1
+            '心電図
+            cell = DirectCast(oSheet.Cells(49, "Q"), Excel.Range)
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 17, 17).Fill.Transparency = 1
+            '胃Baと便の○
+            If circleTypeBox.SelectedIndex = 0 Then 'Ba有り、便有り
+                'Ba○
+                cell = DirectCast(oSheet.Cells(30, "R"), Excel.Range)
+                xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 17, 17).Fill.Transparency = 1
+                '便○
+                cell = DirectCast(oSheet.Cells(41, "R"), Excel.Range)
+                xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 70, 17).Fill.Transparency = 1
+                oSheet.Range("Z43").Value = "２本"
+                cell = DirectCast(oSheet.Cells(43, "Z"), Excel.Range)
+                xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 40, 25).Fill.Transparency = 1
+            ElseIf circleTypeBox.SelectedIndex = 1 Then 'Ba有り、便無し
+                'Ba○
+                cell = DirectCast(oSheet.Cells(30, "R"), Excel.Range)
+                xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 17, 17).Fill.Transparency = 1
+                '便×
+                cell = DirectCast(oSheet.Cells(41, "S"), Excel.Range)
+                xlShapes.AddConnector(Microsoft.Office.Core.MsoConnectorType.msoConnectorStraight, cell.Left, cell.Top, cell.Left + 20, cell.Top + 20).ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront)
+                xlShapes.AddConnector(Microsoft.Office.Core.MsoConnectorType.msoConnectorStraight, cell.Left + 20, cell.Top, cell.Left, cell.Top + 20).ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront)
+            ElseIf circleTypeBox.SelectedIndex = 2 Then 'Ba無し、便有り
+                'Ba×
+                cell = DirectCast(oSheet.Cells(30, "R"), Excel.Range)
+                xlShapes.AddConnector(Microsoft.Office.Core.MsoConnectorType.msoConnectorStraight, cell.Left, cell.Top, cell.Left + 20, cell.Top + 20).ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront)
+                xlShapes.AddConnector(Microsoft.Office.Core.MsoConnectorType.msoConnectorStraight, cell.Left + 20, cell.Top, cell.Left, cell.Top + 20).ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront)
+                '便○
+                cell = DirectCast(oSheet.Cells(41, "R"), Excel.Range)
+                xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 70, 17).Fill.Transparency = 1
+                oSheet.Range("Z43").Value = "２本"
+                cell = DirectCast(oSheet.Cells(43, "Z"), Excel.Range)
+                xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 40, 25).Fill.Transparency = 1
+            ElseIf circleTypeBox.SelectedIndex = 3 Then 'Ba無し、便無し
+                'Ba×
+                cell = DirectCast(oSheet.Cells(30, "R"), Excel.Range)
+                xlShapes.AddConnector(Microsoft.Office.Core.MsoConnectorType.msoConnectorStraight, cell.Left, cell.Top, cell.Left + 20, cell.Top + 20).ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront)
+                xlShapes.AddConnector(Microsoft.Office.Core.MsoConnectorType.msoConnectorStraight, cell.Left + 20, cell.Top, cell.Left, cell.Top + 20).ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront)
+                '便×
+                cell = DirectCast(oSheet.Cells(41, "S"), Excel.Range)
+                xlShapes.AddConnector(Microsoft.Office.Core.MsoConnectorType.msoConnectorStraight, cell.Left, cell.Top, cell.Left + 20, cell.Top + 20).ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront)
+                xlShapes.AddConnector(Microsoft.Office.Core.MsoConnectorType.msoConnectorStraight, cell.Left + 20, cell.Top, cell.Left, cell.Top + 20).ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront)
+            End If
+        End If
+
+        '採血種類
+        Dim bloodType As String = bloodTypeBox.Text
+        If bloodType <> "" Then
+            Dim type() As String = bloodType.Split("＋")
+            Dim count As Integer = type.Length
+            If type(0) = "生活" Then
+                '左下の生活習慣病予防健診に○
+                cell = DirectCast(oSheet.Cells(63, "B"), Excel.Range)
+                xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 93, 15).Fill.Transparency = 1
+            End If
+            If count > 1 Then
+                Dim plusItem As String = ""
+                For i As Integer = 1 To count - 1
+                    plusItem &= "＋" & type(i)
+                Next
+                oSheet.Range("C64").Value = plusItem
+            End If
+        End If
+
+        '肝炎の○
+        If bloodType.IndexOf("肝炎") >= 0 Then
+            '肝炎
+            cell = DirectCast(oSheet.Cells(46, "Q"), Excel.Range)
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 17, 17).Fill.Transparency = 1
+            'HBs抗原
+            cell = DirectCast(oSheet.Cells(45, "R"), Excel.Range)
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 50, 17).Fill.Transparency = 1
+            'HCV抗体
+            cell = DirectCast(oSheet.Cells(46, "R"), Excel.Range)
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 50, 17).Fill.Transparency = 1
+        End If
+
         '必要枚数コピペ
         For i As Integer = 0 To dataList.Count - 2
             Dim xlPasteRange As Excel.Range = oSheet.Range("A" & (1 + 64 * (i + 1))) 'ペースト先
@@ -270,7 +367,7 @@ Public Class 基本項目一括印刷
         Dim image3bPath As String = TopForm.health3bPath '胃部画像
         For i As Integer = 0 To dataList.Count - 1
             oSheet.Range("H" & (5 + 64 * i), "O" & (9 + 64 * i)).Value = dataList(i)
-            Dim cell As Excel.Range = DirectCast(oSheet.Cells(24 + 64 * i, "S"), Excel.Range)
+            cell = DirectCast(oSheet.Cells(24 + 64 * i, "S"), Excel.Range)
             xlShapes.AddPicture(image3aPath, False, True, cell.Left, cell.Top, 70, 60)
             cell = DirectCast(oSheet.Cells(31 + 64 * i, "S"), Excel.Range)
             xlShapes.AddPicture(image3bPath, False, True, cell.Left, cell.Top, 60, 50)
