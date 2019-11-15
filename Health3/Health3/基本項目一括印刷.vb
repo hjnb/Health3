@@ -254,11 +254,11 @@ Public Class 基本項目一括印刷
         '事業所名
         oSheet.Range("W5").Value = ind
         'その他の検査項目1
-        oSheet.Range("R10").Value = cb1.Text
+        oSheet.Range("AA10").Value = cb1.Text
         'その他の検査項目2
-        oSheet.Range("R11").Value = cb2.Text
+        oSheet.Range("AA11").Value = cb2.Text
         'その他の検査項目3
-        oSheet.Range("R12").Value = cb3.Text
+        oSheet.Range("AA12").Value = cb3.Text
 
         '検診項目の○印
         Dim cell As Excel.Range
@@ -271,7 +271,7 @@ Public Class 基本項目一括印刷
             xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left + 5, cell.Top + 5, 17, 17).Fill.Transparency = 1
             '既往歴・自覚症状
             cell = DirectCast(oSheet.Cells(9, "Q"), Excel.Range)
-            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 75, 17).Fill.Transparency = 1
+            xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top - 3, 75, 17).Fill.Transparency = 1
             '採血時間
             cell = DirectCast(oSheet.Cells(13, "Q"), Excel.Range)
             xlShapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, cell.Left, cell.Top, 40, 17).Fill.Transparency = 1
