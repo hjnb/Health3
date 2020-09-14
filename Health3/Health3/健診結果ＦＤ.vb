@@ -10,7 +10,7 @@ Public Class 健診結果ＦＤ
     Private Const CODE As String = "0111415816"
 
     '院長氏名
-    Private Const CEO_NAME As String = "臼田　俊二"
+    Private Const CEO_NAME As String = "竹内　實"
 
     '全角スペース
     Private Const SPACE_ZENKAKU As String = "　"
